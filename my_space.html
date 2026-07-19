@@ -1,0 +1,2619 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Space | Beinex AI People Portal</title>
+  
+  <!-- Font CDN: Noto Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+
+  <!-- ApexCharts CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+  <script>
+    (function () {
+      var key = 'pp-theme';
+      var saved = localStorage.getItem(key);
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <style>
+    :root {
+      --font-main: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --brand-blue: #007bff;
+      --brand-sky: #38bdf8;
+      --accent-indigo: #6366f1;
+      
+      /* Theme Tokens */
+      --bg-app: #ffffff;
+      --bg-muted: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-glass-strong: rgba(255, 255, 255, 0.88);
+      --text-primary: #0a0f1a;
+      --text-secondary: #475569;
+      --text-tertiary: #94a3b8;
+      --border-glass: rgba(0, 0, 0, 0.08);
+      --border-card: rgba(0, 0, 0, 0.08);
+      --border-card-hover: rgba(0, 123, 255, 0.2);
+      
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 24px 48px rgba(0, 0, 0, 0.12);
+      --shadow-glow: 0 0 20px rgba(0, 123, 255, 0.15);
+      
+      --radius-md: 20px;
+      --radius-lg: 32px;
+      
+      --gradient-brand: linear-gradient(135deg, #007bff 0%, #6366f1 100%);
+      --color-brand-rgb: 0, 123, 255;
+      --glass-blur: 20px;
+
+      /* Accent Colors */
+      --accent-p: #007bff;
+      --accent-violet: #8b5cf6;
+      --accent-amber: #f59e0b;
+      --accent-emerald: #10b981;
+      --accent-cyan: #06b6d4;
+      --accent-rose: #f43f5e;
+      
+      --surface-glass-bg: rgba(255, 255, 255, 0.7);
+      --surface-blur: 20px;
+    }
+
+    [data-theme="dark"] {
+      --bg-app: #030712;
+      --bg-muted: #0a0f1a;
+      --bg-card: #0a0f1a;
+      --bg-glass-strong: rgba(10, 15, 26, 0.82);
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-tertiary: #64748b;
+      --border-glass: rgba(255, 255, 255, 0.06);
+      --border-card: rgba(255, 255, 255, 0.06);
+      --border-card-hover: rgba(56, 189, 248, 0.3);
+      --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.15);
+      --surface-glass-bg: rgba(15, 23, 42, 0.6);
+      color-scheme: dark;
+    }
+
+    /* Premium Theme Adjustments */
+    [data-theme="light"] .header { 
+      background: rgba(255, 255, 255, 0.9); 
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    }
+    [data-theme="light"] .nav-link { color: #475569; }
+    [data-theme="light"] .nav-link:hover, [data-theme="light"] .nav-link.is-active { color: var(--brand-blue); background: rgba(0, 123, 255, 0.05); }
+    [data-theme="light"] .profile-chip--header { background: #f1f5f9; border-color: #e2e8f0; }
+    [data-theme="light"] .profile-chip__name { color: #0f172a; }
+    [data-theme="light"] .icon-btn--theme { color: #475569; }
+
+    [data-theme="dark"] .header { background: rgba(3, 7, 18, 0.85); border-bottom-color: rgba(255, 255, 255, 0.05); }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--text-primary);
+      background-color: var(--bg-app);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .dashboard-body-scroll {
+      height: 100vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      padding-top: 0;
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 72px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+    }
+    [data-theme="dark"] .header { 
+      background: rgba(3, 7, 18, 0.6); 
+      border-bottom-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .navbar {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo__img { height: 26px; }
+
+    .nav-list { display: flex; list-style: none; gap: 4px; padding: 0; margin: 0; }
+    .nav-item { position: relative; list-style: none; }
+
+    .nav-link {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .nav-link__icon { font-size: 13px; opacity: 0.9; }
+
+    .nav-link:hover, .nav-link.is-active {
+      color: var(--brand-blue);
+      background: rgba(var(--color-brand-rgb), 0.08);
+    }
+
+    .nav-chevron { font-size: 10px; opacity: 0.9; transition: transform 0.3s; }
+    .nav-item:hover .nav-chevron { transform: rotate(180deg); }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      padding: 8px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      z-index: 100;
+      list-style: none;
+      margin: 0;
+    }
+
+    .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+
+    .dropdown li { list-style: none; margin-bottom: 2px; }
+    .dropdown li:last-child { margin-bottom: 0; }
+
+    .dropdown button {
+      width: 100%;
+      text-align: left;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.2s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .dropdown button:hover {
+      background: rgba(var(--color-brand-rgb), 0.08);
+      color: var(--brand-blue);
+    }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+    /* ─── MOBILE TOGGLE ─── */
+    .nav-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border-glass);
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0;
+    }
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    .nav-toggle.is-active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-toggle.is-active span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .icon-btn--theme {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s;
+    }
+    .icon-btn--theme:hover { background: rgba(var(--color-brand-rgb), 0.08); color: var(--brand-blue); }
+    [data-theme="dark"] .icon-theme--sun { display: none; }
+    [data-theme="light"] .icon-theme--moon { display: none; }
+
+    .profile-chip--header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 12px 4px 4px;
+      border-radius: 30px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border-glass);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .profile-chip--header:hover { border-color: var(--brand-blue); background: var(--bg-card); }
+    .profile-chip__avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
+    .profile-chip__name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+
+    /* ─── CONTENT AREA ─── */
+    .module-container { 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      padding: 0 40px; 
+    }
+
+    .page-section { padding: 80px 0 20px; margin-bottom: 32px; }
+
+    /* ─── MY SPACE SPECIFICS ─── */
+    .profile-hero-card {
+      display: flex;
+      flex-direction: column;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: radial-gradient(circle at 20% 30%, rgba(0, 123, 255, 0.1) 0%, transparent 60%),
+                  radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.1) 0%, transparent 70%),
+                  linear-gradient(135deg, rgba(var(--color-brand-rgb), 0.08) 0%, rgba(139, 92, 246, 0.05) 100%);
+      border: 1px solid var(--border-glass);
+      position: relative;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-md);
+      gap: 12px;
+    }
+
+    [data-theme="light"] .profile-hero-card {
+      background: radial-gradient(circle at 20% 30%, rgba(0, 123, 255, 0.06) 0%, transparent 60%),
+                  radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.06) 0%, transparent 70%),
+                  #fff;
+      border-color: rgba(0, 123, 255, 0.15);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+    }
+
+    .profile-details-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 24px 32px 24px;
+      flex-wrap: wrap;
+      gap: 20px;
+      z-index: 5;
+    }
+
+    .profile-info-left { display: flex; align-items: center; gap: 20px; }
+
+    .profile-image-wrap {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-image {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      object-fit: cover;
+      z-index: 2;
+    }
+
+    .profile-avatar-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .profile-avatar-progress circle {
+      fill: none;
+      stroke-width: 6;
+      stroke-linecap: round;
+    }
+
+    .profile-avatar-progress .bg {
+      stroke: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="light"] .profile-avatar-progress .bg {
+      stroke: rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-avatar-progress .fg {
+      stroke: var(--brand-blue);
+      stroke-dasharray: 440;
+      stroke-dashoffset: 440;
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .profile-avatar-badge {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--brand-blue);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      z-index: 3;
+      box-shadow: 0 4px 10px rgba(var(--color-brand-rgb), 0.3);
+      border: 2px solid var(--bg-card);
+    }
+
+    .profile-onsite-indicator {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 32px;
+      height: 32px;
+      background: var(--gradient-brand);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(var(--color-brand-rgb), 0.4);
+      border: 2px solid var(--bg-card);
+      z-index: 4;
+      opacity: 0;
+      transform: scale(0) rotate(-45deg);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .profile-onsite-indicator.active {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+
+    .profile-onsite-indicator i {
+      animation: flight-float 3s ease-in-out infinite;
+    }
+
+    @keyframes flight-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .profile-meta-stack { display: flex; flex-direction: column; gap: 4px; }
+
+    .profile-name-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .verified-badge { color: #3b82f6; font-size: 0.95rem; }
+
+    .profile-role-sub { 
+      font-size: 0.85rem; 
+      font-weight: 500; 
+      color: var(--text-primary); 
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border-glass);
+      margin-top: 4px;
+      width: fit-content;
+    }
+    .profile-role-sub:hover {
+      background: var(--bg-card);
+      color: var(--brand-blue);
+      border-color: var(--brand-blue);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .profile-role-sub i { font-size: 10px; color: var(--brand-blue); }
+
+    /* ─── GROWTH MODAL ─── */
+    .growth-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .growth-modal.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .growth-modal__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .growth-modal__content {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: var(--shadow-lg), 0 0 40px rgba(var(--color-brand-rgb), 0.15);
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 85vh;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(var(--color-brand-rgb), 0.3) transparent;
+    }
+
+    .growth-modal__content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .growth-modal__content::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 20px 0;
+    }
+
+    .growth-modal__content::-webkit-scrollbar-thumb {
+      background: rgba(var(--color-brand-rgb), 0.2);
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+
+    .growth-modal__content::-webkit-scrollbar-thumb:hover {
+      background: rgba(var(--color-brand-rgb), 0.4);
+      background-clip: content-box;
+    }
+
+    [data-theme="dark"] .growth-modal__content {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 15, 30, 0.98) 100%);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .growth-modal.is-active .growth-modal__content {
+      transform: scale(1) translateY(0);
+    }
+
+    .growth-modal__close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-muted);
+      border: 1px solid var(--border-glass);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+      font-size: 14px;
+    }
+
+    .growth-modal__close:hover {
+      background: rgba(244, 63, 94, 0.2);
+      border-color: #f43f5e;
+      color: #f43f5e;
+      transform: rotate(90deg);
+    }
+
+    .growth-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .growth-header h2 {
+      font-size: 22px;
+      font-weight: 800;
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .growth-header p {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .growth-timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .growth-timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-glass);
+    }
+
+    .growth-timeline__line {
+      position: absolute;
+      left: 7px;
+      top: 0;
+      width: 2px;
+      background: var(--gradient-brand);
+      height: 0;
+      transition: height 2s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
+    }
+
+    .growth-modal.is-active .growth-timeline__line {
+      height: 100%;
+    }
+
+    .growth-item {
+      position: relative;
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.6s ease;
+    }
+
+    .growth-modal.is-active .growth-item {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .growth-item:nth-child(1) { transition-delay: 0.3s; }
+    .growth-item:nth-child(2) { transition-delay: 0.8s; }
+    .growth-item:nth-child(3) { transition-delay: 1.3s; }
+    .growth-item:nth-child(4) { transition-delay: 1.8s; }
+
+    .growth-dot {
+      position: absolute;
+      left: -32px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 3px solid var(--border-glass);
+      z-index: 2;
+      transition: all 0.4s ease;
+    }
+
+    .growth-modal.is-active .growth-item.is-past .growth-dot {
+      background: var(--brand-blue);
+      border-color: rgba(var(--color-brand-rgb), 0.3);
+      box-shadow: 0 0 10px var(--brand-blue);
+    }
+
+    .growth-item.is-current .growth-dot {
+      background: var(--brand-sky);
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 15px var(--brand-sky);
+      animation: dot-pulse 2s infinite;
+    }
+
+    @keyframes dot-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+    }
+
+    .growth-content {
+      background: var(--bg-muted);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+    }
+
+    .growth-item:hover .growth-content {
+      background: var(--bg-card);
+      border-color: var(--brand-blue);
+      transform: scale(1.01);
+    }
+
+    .growth-role {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .growth-date {
+      display: block;
+      font-size: 10px;
+      color: var(--brand-blue);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .growth-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .growth-skills {
+      display: flex;
+      gap: 4px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .growth-skill {
+      font-size: 9px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(var(--color-brand-rgb), 0.1);
+      color: var(--brand-blue);
+      border: 1px solid rgba(var(--color-brand-rgb), 0.2);
+    }
+
+    .growth-next {
+      margin-top: 16px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+      border: 1px dashed var(--brand-blue);
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .growth-next__label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--brand-blue);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .growth-next__role {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .growth-next__role i {
+      font-size: 14px;
+      color: #f59e0b;
+      animation: star-spin 4s linear infinite;
+    }
+
+    @keyframes star-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .growth-progress-mini {
+      height: 4px;
+      background: var(--bg-muted);
+      border-radius: 2px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .growth-progress-mini__fill {
+      height: 100%;
+      background: var(--gradient-brand);
+      width: 0;
+      transition: width 1.5s ease-out 2.5s;
+    }
+
+    .growth-modal.is-active .growth-progress-mini__fill {
+      width: 65%;
+    }
+
+    @media (max-width: 480px) {
+      .growth-modal__content {
+        padding: 24px 16px;
+        border-radius: 20px;
+      }
+      .growth-header h2 { font-size: 18px; }
+      .growth-timeline { padding-left: 24px; }
+      .growth-dot { left: -24px; }
+      .growth-role { font-size: 13px; }
+      .growth-desc { font-size: 11px; }
+    }
+
+    .profile-tags-inline { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+
+    .profile-badge-small {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(26, 31, 46, 0.8) 0%, rgba(17, 24, 39, 0.8) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    /* [data-theme="dark"] .profile-badge-small removed to keep consistent style */
+
+    .profile-badge-small:hover {
+      transform: translateY(-2px);
+      border-color: var(--brand-blue);
+      box-shadow: 0 4px 12px rgba(var(--color-brand-rgb), 0.1);
+    }
+
+    .profile-core-details-list {
+      display: flex;
+      gap: 16px;
+      font-size: 0.72rem;
+      color: var(--text-primary);
+      margin-top: 6px;
+    }
+
+    .profile-completion-box { width: 240px; display: flex; flex-direction: column; gap: 8px; }
+
+    .profile-completion-header { display: flex; justify-content: space-between; font-size: 0.72rem; font-weight: 700; }
+
+    .progress-track { background: var(--bg-muted); border-radius: 4px; overflow: hidden; }
+    .progress-fill { 
+      background: var(--gradient-brand); 
+      height: 100%; 
+      border-radius: 4px; 
+      width: 0; 
+      transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); 
+    }
+
+    .complete-btn-action {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--brand-blue);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: right;
+    }
+
+    .glass-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+    }
+
+    /* Reveal & Counting Animations */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform, opacity;
+    }
+
+    .reveal-item.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .scroll-reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .glass-panel:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--brand-blue);
+    }
+
+    .status-pill-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      transition: all 0.3s ease;
+    }
+
+    .status-pill-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--brand-blue);
+      box-shadow: var(--shadow-md);
+    }
+
+    .pulse-dot { width: 8px; height: 8px; border-radius: 50%; position: relative; }
+    .pulse-dot.green { background: #10b981; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); animation: pulse-green 2s infinite; }
+    @keyframes pulse-green { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+    .status-pill-info { display: flex; flex-direction: column; }
+    .status-pill-val { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); }
+    .status-pill-lbl { font-size: 0.65rem; color: var(--text-tertiary); }
+
+    .personal-context-bar {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      padding: 0 24px 12px;
+    }
+
+    .link-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+
+    .link-action:hover {
+      background: var(--brand-blue);
+      border-color: var(--brand-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(var(--color-brand-rgb), 0.3);
+    }
+
+    .link-action i {
+      font-size: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .link-action:hover i {
+      transform: translateX(3px);
+    }
+
+    [data-theme="light"] .link-action {
+      background: #f1f5f9;
+      border-color: #e2e8f0;
+      color: var(--text-primary);
+    }
+
+    [data-theme="light"] .link-action:hover {
+      background: var(--brand-blue);
+      border-color: var(--brand-blue);
+      color: #fff;
+    }
+
+    /* Ranking KPI Styles */
+    .ranking-card { padding: 32px; display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 40px; align-items: center; }
+    .ranking-card__overall { text-align: center; position: relative; }
+    .ranking-card__rank-circle { 
+      width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--border-glass); 
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      margin: 0 auto 16px; position: relative; background: var(--bg-muted);
+      box-shadow: inset 0 0 20px rgba(0, 123, 255, 0.05);
+      animation: rankPulse 3s ease-in-out infinite;
+    }
+    @keyframes rankPulse {
+      0%, 100% { border-color: var(--border-glass); box-shadow: inset 0 0 20px rgba(0, 123, 255, 0.05); }
+      50% { border-color: var(--brand-blue); box-shadow: inset 0 0 30px rgba(0, 123, 255, 0.15), 0 0 20px rgba(0, 123, 255, 0.1); }
+    }
+    .confetti-particle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 10;
+      animation: confettiExplode 1.5s ease-out forwards;
+    }
+    @keyframes confettiExplode {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(0); opacity: 0; }
+    }
+    .ranking-card__rank-num { font-size: 36px; font-weight: 900; color: var(--brand-blue); line-height: 1; margin-bottom: 4px; }
+    .ranking-card__rank-total { font-size: 12px; color: var(--text-tertiary); font-weight: 700; }
+    .ranking-card__rank-label { font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+
+    .ranking-card__breakdown { display: flex; flex-direction: column; gap: 20px; }
+    .ranking-metric { position: relative; }
+    .ranking-metric__head { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 700; }
+    .ranking-metric__label { color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+    .ranking-metric__val { color: var(--brand-blue); }
+    
+    .ranking-card__context { display: flex; flex-direction: column; gap: 16px; }
+    .ranking-context-item { 
+      padding: 16px; background: var(--bg-muted); border-radius: 16px; border: 1px solid var(--border-glass);
+      display: flex; flex-direction: column; gap: 4px; transition: all 0.3s ease;
+    }
+    .ranking-context-item:hover { transform: translateX(8px); border-color: var(--brand-blue); background: var(--bg-card); box-shadow: var(--shadow-sm); }
+    .ranking-context-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; }
+    .ranking-context-val { font-size: 18px; font-weight: 800; color: var(--text-primary); }
+    .ranking-context-val span { color: var(--brand-blue); font-size: 14px; margin-left: 4px; opacity: 0.8; }
+
+    @media (max-width: 1024px) {
+      .ranking-card { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+      .ranking-context-item:hover { transform: translateY(-5px); }
+    }
+
+    .profile-stats-panel-row {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+      padding: 0 24px 32px;
+    }
+
+    .profile-stat-node { 
+      padding: 16px; 
+      text-align: center; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .profile-stat-node.stat--purple { border-color: rgba(139, 92, 246, 0.4); }
+    .profile-stat-node.stat--green { border-color: rgba(16, 185, 129, 0.4); }
+    .profile-stat-node.stat--orange { border-color: rgba(245, 158, 11, 0.4); }
+    .profile-stat-node.stat--blue { border-color: rgba(0, 123, 255, 0.4); }
+
+    .profile-stat-node:hover {
+      transform: translateY(-8px);
+    }
+
+    .profile-stat-node.stat--purple:hover { border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); }
+    .profile-stat-node.stat--green:hover { border-color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+    .profile-stat-node.stat--orange:hover { border-color: #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
+    .profile-stat-node.stat--blue:hover { border-color: #007bff; box-shadow: 0 0 15px rgba(0, 123, 255, 0.3); }
+
+    [data-theme="light"] .profile-stat-node { background: rgba(0, 123, 255, 0.05); border-color: rgba(0, 123, 255, 0.1); }
+    [data-theme="light"] .profile-stat-node.stat--purple { border-color: rgba(139, 92, 246, 0.3); }
+    [data-theme="light"] .profile-stat-node.stat--green { border-color: rgba(16, 185, 129, 0.3); }
+    [data-theme="light"] .profile-stat-node.stat--orange { border-color: rgba(245, 158, 11, 0.3); }
+    [data-theme="light"] .profile-stat-node.stat--blue { border-color: rgba(0, 123, 255, 0.3); }
+
+    .profile-stat-num { font-size: 1.2rem; font-weight: 800; color: var(--text-primary); display: block; }
+    /* .kpi-num-val placeholder for script targeting */
+    .profile-stat-lbl { font-size: 0.65rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .space-tabs-navigation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      border-bottom: 1px solid var(--border-glass);
+      margin-bottom: 32px;
+      padding-bottom: 4px;
+      overflow: visible;
+    }
+
+    .space-nav-tab {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+
+    .space-nav-tab.active { color: var(--brand-blue); border-bottom-color: var(--brand-blue); }
+    .space-nav-tab:hover:not(.active) { color: var(--text-secondary); }
+
+    .space-contents-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 0.8fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card-title-bar {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-glass);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title-bar h2 { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); }
+    .kpi-meta-desc { font-size: 0.75rem; color: var(--brand-blue); font-weight: 600; }
+
+    .requests-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    .request-tab {
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      background: var(--bg-muted);
+      cursor: pointer;
+    }
+    .request-tab.active { background: var(--brand-blue); color: #fff; }
+
+    .list-wrapper-scroll { display: flex; flex-direction: column; gap: 12px; }
+    .list-item-node {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border-glass);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .list-item-node:hover {
+      transform: translateX(8px);
+      background: var(--bg-card);
+      border-color: var(--brand-blue);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .node-title { font-size: 0.8rem; font-weight: 700; color: var(--text-primary); display: block; }
+    .node-sub { font-size: 0.7rem; color: var(--text-tertiary); }
+
+    .status-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .status-badge.in-review { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+    .status-badge.approved { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+    .status-badge.in-progress { background: rgba(0, 123, 255, 0.1); color: #007bff; }
+    .status-badge.pending { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+    .allocation-box { display: flex; flex-direction: column; gap: 12px; }
+    .allocation-metadata-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px dashed var(--border-glass);
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 0 -6px;
+    }
+    .allocation-metadata-line:hover {
+      background: var(--bg-muted);
+      transform: translateX(4px);
+    }
+    .allocation-metadata-line .lbl { font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+    .allocation-metadata-line .val { font-size: 0.8rem; font-weight: 700; color: var(--text-primary); }
+
+    .calendar-card { padding: 16px; }
+    .calendar-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .calendar-head h4 { font-size: 0.9rem; font-weight: 800; }
+    .calendar-month-arrows { display: flex; gap: 12px; color: var(--text-tertiary); cursor: pointer; }
+
+    .calendar-box-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .calendar-day-lbl { font-size: 0.65rem; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; margin-bottom: 8px; }
+    .calendar-day-node {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 8px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .calendar-day-node:hover { 
+      background: var(--brand-blue); 
+      color: #fff;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(var(--color-brand-rgb), 0.3);
+    }
+    .calendar-day-node.active-day { background: var(--brand-blue); color: #fff; }
+    .calendar-day-node.leave-day { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+    .calendar-day-node.visit-day { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-glass);
+      padding: 24px 0 40px;
+      margin-top: 0;
+    }
+
+    .footer__grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 60px; margin-bottom: 60px; }
+    .footer__brand .logo { font-size: 24px; font-weight: 800; margin-bottom: 20px; color: var(--brand-blue); }
+    .footer__brand p { color: var(--text-secondary); font-size: 15px; margin-bottom: 24px; max-width: 300px; }
+    .footer__social { display: flex; gap: 16px; }
+    .footer__social a { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-muted); display: flex; align-items: center; justify-content: center; color: var(--text-primary); transition: all 0.3s ease; font-size: 18px; text-decoration: none; }
+    .footer__social a:hover { background: var(--brand-blue); color: #fff; transform: translateY(-4px); }
+    .footer__links h4, .footer__newsletter h4 { font-size: 16px; font-weight: 800; margin-bottom: 24px; color: var(--text-primary); }
+    .footer__links ul { list-style: none; }
+    .footer__links ul li { margin-bottom: 12px; }
+    .footer__links ul li a { color: var(--text-secondary); text-decoration: none; font-size: 15px; transition: 0.2s; }
+    .footer__links ul li a:hover { color: var(--brand-blue); }
+    .footer__newsletter p { color: var(--text-secondary); font-size: 14px; margin-bottom: 20px; }
+    .newsletter-form { display: flex; gap: 10px; }
+    .newsletter-form input { flex: 1; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border-glass); background: var(--bg-muted); color: var(--text-primary); font-family: inherit; }
+    .newsletter-form button { width: 44px; height: 44px; border-radius: 12px; background: var(--brand-blue); color: #fff; border: none; cursor: pointer; }
+    .footer__bottom { padding-top: 40px; border-top: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center; color: var(--text-tertiary); font-size: 14px; }
+    .footer__bottom-links { display: flex; gap: 24px; }
+    .footer__bottom-links a { color: var(--text-tertiary); text-decoration: none; }
+
+    /* ─── QUICK ACCESS (Beinex B Button) ─── */
+    /* Quick Access — AssistiveTouch-style radial FAB */
+    .assistive-container {
+      position: fixed;
+      top: calc(50% - 28px);
+      right: 16px;
+      z-index: 1500;
+      touch-action: none;
+      width: 56px;
+      height: 56px;
+      overflow: visible;
+    }
+
+    .assistive-container.docking,
+    .assistive-container.opening {
+      transition:
+        left 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+        top 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .touch-button {
+      position: relative;
+      z-index: 2;
+      width: 56px;
+      height: 56px;
+      padding: 0;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: var(--bg-glass-strong);
+      backdrop-filter: blur(var(--glass-blur)) saturate(1.35);
+      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.35);
+      box-shadow:
+        var(--shadow-md),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        0 0 0 1px rgba(var(--color-brand-rgb), 0.08);
+      color: var(--accent-p);
+      cursor: grab;
+      display: grid;
+      place-items: center;
+      user-select: none;
+      isolation: isolate;
+      overflow: hidden;
+      transition:
+        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.28s ease,
+        border-color 0.28s ease,
+        background 0.28s ease,
+        color 0.28s ease;
+    }
+
+    .touch-button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.42) 0%, transparent 42%),
+        radial-gradient(circle at 30% 25%, rgba(var(--color-brand-rgb), 0.22), transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.28s ease;
+    }
+
+    .touch-button::after {
+      content: 'Quick actions';
+      position: absolute;
+      right: calc(100% + 12px);
+      top: 50%;
+      transform: translateY(-50%) translateX(6px);
+      padding: 7px 12px;
+      border-radius: 10px;
+      background: var(--bg-glass-strong);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-card);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: var(--shadow-sm);
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .assistive-container.dock-left .touch-button::after {
+      right: auto;
+      left: calc(100% + 12px);
+      transform: translateY(-50%) translateX(-6px);
+    }
+
+    .touch-button:hover {
+      transform: translateY(-2px) scale(1.05);
+      border-color: rgba(var(--color-brand-rgb), 0.45);
+      color: var(--brand-blue);
+      box-shadow:
+        var(--shadow-lg),
+        var(--shadow-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        0 0 0 4px rgba(var(--color-brand-rgb), 0.12);
+      cursor: pointer;
+    }
+
+    .touch-button:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    .assistive-container.dock-left .touch-button:hover::after {
+      transform: translateY(-50%) translateX(0);
+    }
+
+    .touch-button:hover::before {
+      opacity: 1;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.55) 0%, transparent 48%),
+        radial-gradient(circle at 30% 25%, rgba(var(--color-brand-rgb), 0.32), transparent 60%);
+    }
+
+    .assistive-container.open .touch-button {
+      background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-p) 100%);
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #fff;
+      transform: scale(1.04);
+      box-shadow:
+        var(--shadow-glow),
+        var(--shadow-lg),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+    }
+
+    .assistive-container.open .touch-button::before {
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.28) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.16), transparent 55%);
+    }
+
+    .assistive-container.open .touch-button::after {
+      content: 'Close';
+      opacity: 0;
+    }
+
+    .assistive-container.open .touch-button:hover::after {
+      opacity: 1;
+    }
+
+    .touch-button:active {
+      cursor: grabbing;
+      transform: scale(0.96);
+    }
+
+    .touch-button__icons {
+      position: relative;
+      z-index: 1;
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+    }
+
+    .touch-button__icon {
+      position: absolute;
+      font-size: 1.05rem;
+      line-height: 1;
+      transition:
+        opacity 0.22s ease,
+        transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .touch-button__icon--open {
+      opacity: 0;
+      transform: rotate(-45deg) scale(0.6);
+    }
+
+    .touch-button:hover .touch-button__icon--rest {
+      transform: scale(1.08);
+    }
+
+    .assistive-container.open .touch-button__icon--rest {
+      opacity: 0;
+      transform: rotate(45deg) scale(0.55);
+    }
+
+    .assistive-container.open .touch-button__icon--open {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+
+    .touch-button__pulse {
+      position: absolute;
+      inset: -3px;
+      border-radius: inherit;
+      border: 1.5px solid rgba(var(--color-brand-rgb), 0.35);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+      animation: touchPulse 2.4s ease-out infinite;
+    }
+
+    .assistive-container.open .touch-button__pulse,
+    .touch-button:hover .touch-button__pulse {
+      animation: none;
+      opacity: 0;
+    }
+
+    @keyframes touchPulse {
+      0% {
+        opacity: 0.55;
+        transform: scale(1);
+      }
+      70% {
+        opacity: 0;
+        transform: scale(1.28);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.28);
+      }
+    }
+
+    .radial-menu {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 56px;
+      height: 56px;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .menu-item {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid var(--border-card);
+      background: var(--bg-glass-strong);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      box-shadow: var(--shadow-md);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      transform: translate(0, 0) scale(0.55);
+      transition:
+        transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        opacity 0.2s ease-out,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+      pointer-events: none;
+    }
+
+    .menu-item i {
+      font-size: 1.2rem;
+      transition: transform 0.2s ease;
+    }
+
+    .menu-item:hover {
+      border-color: var(--border-card-hover);
+      box-shadow: var(--shadow-lg);
+      background: var(--bg-card);
+      z-index: 3;
+    }
+
+    .menu-item:hover i {
+      transform: scale(1.08);
+    }
+
+    .menu-item[data-tooltip]::before {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: 50%;
+      left: calc(100% + 10px);
+      transform: translateY(-50%);
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--bg-glass-strong);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-card);
+      color: var(--text-primary);
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+      box-shadow: var(--shadow-sm);
+      z-index: 4;
+    }
+
+    .assistive-container.open.menu-side-left .menu-item[data-tooltip]::before {
+      left: auto;
+      right: calc(100% + 10px);
+    }
+
+    .assistive-container.open .menu-item:hover::before,
+    .assistive-container.open .menu-item:focus-visible::before {
+      opacity: 1;
+    }
+
+    .assistive-container.open .radial-menu {
+      pointer-events: auto;
+    }
+
+    .assistive-container.open .menu-item {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(var(--mx, 0), var(--my, 0)) scale(1);
+    }
+
+    .assistive-container.open .menu-item:nth-child(1) { transition-delay: 0.02s; }
+    .assistive-container.open .menu-item:nth-child(2) { transition-delay: 0.04s; }
+    .assistive-container.open .menu-item:nth-child(3) { transition-delay: 0.06s; }
+    .assistive-container.open .menu-item:nth-child(4) { transition-delay: 0.08s; }
+    .assistive-container.open .menu-item:nth-child(5) { transition-delay: 0.10s; }
+    .assistive-container.open .menu-item:nth-child(6) { transition-delay: 0.12s; }
+    .assistive-container.open .menu-item:nth-child(7) { transition-delay: 0.14s; }
+    .assistive-container.open .menu-item:nth-child(8) { transition-delay: 0.16s; }
+
+    @media (max-width: 1024px) {
+      .navbar { padding: 0 16px; }
+      .nav-toggle { display: flex; order: 2; }
+      .nav-menu {
+        position: fixed;
+        top: 72px;
+        left: -100%;
+        width: 280px;
+        height: calc(100vh - 72px);
+        background: var(--bg-card);
+        border-right: 1px solid var(--border-glass);
+        padding: 24px;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 999;
+        overflow-y: auto;
+      }
+      .nav-menu.is-active { left: 0; box-shadow: 20px 0 40px rgba(0,0,0,0.1); }
+      .nav-list { flex-direction: column; gap: 8px; }
+      .nav-link { padding: 12px 16px; width: 100%; font-size: 15px; }
+      .dropdown { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; padding-left: 32px; display: none; }
+      .nav-item.is-active .dropdown { display: block; }
+      .nav-actions { order: 3; gap: 8px; }
+      .profile-chip__name { display: none; }
+      .profile-chip--header { padding: 4px; }
+
+      .space-contents-grid { grid-template-columns: 1fr; }
+      .profile-stats-panel-row { grid-template-columns: repeat(4, 1fr); }
+      .personal-context-bar { grid-template-columns: repeat(3, 1fr); }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .profile-stats-panel-row { grid-template-columns: repeat(2, 1fr); }
+      .personal-context-bar { grid-template-columns: 1fr; }
+      .profile-details-block { padding-top: 120px; text-align: center; justify-content: center; }
+      .profile-info-left { flex-direction: column; }
+      .profile-core-details-list { flex-direction: column; gap: 4px; }
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="dashboard-body-scroll">
+
+  <header class="header">
+    <nav class="navbar" id="main-navbar">
+      <div class="nav-brand">
+        <a href="portal_home_page.html" class="nav-logo">
+          <img src="https://beinex.com/wp-content/uploads/2023/04/Beinex-Logo.svg" alt="Beinex AI" class="nav-logo__img" id="nav-logo-img">
+        </a>
+      </div>
+
+      <button class="nav-toggle" id="mobile-nav-toggle" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-menu" id="nav-menu-drawer">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="portal_home_page.html" class="nav-link"><i class="fa-solid fa-house nav-link__icon"></i> Home</a></li>
+          <li class="nav-item"><a href="my_space.html" class="nav-link is-active"><i class="fa-solid fa-user nav-link__icon"></i> My Space</a></li>
+          <li class="nav-item has-dropdown">
+            <button class="nav-link"><i class="fa-solid fa-users nav-link__icon"></i> People <i class="fa-solid fa-chevron-down nav-chevron"></i></button>
+            <ul class="dropdown">
+              <li><button onclick="triggerMockAction('Team')"><i class="fa-solid fa-users-viewfinder dropdown__icon"></i> Team</button></li>
+              <li><button onclick="triggerMockAction('Organization')"><i class="fa-solid fa-sitemap dropdown__icon"></i> Organization</button></li>
+            </ul>
+          </li>
+          <li class="nav-item has-dropdown">
+            <button class="nav-link"><i class="fa-solid fa-chart-line nav-link__icon"></i> Performance <i class="fa-solid fa-chevron-down nav-chevron"></i></button>
+            <ul class="dropdown">
+              <li><button onclick="triggerMockAction('OKRs')"><i class="fa-solid fa-target-arrow dropdown__icon"></i> OKRs</button></li>
+            </ul>
+          </li>
+          <li class="nav-item has-dropdown">
+            <button class="nav-link"><i class="fa-solid fa-briefcase nav-link__icon"></i> Services <i class="fa-solid fa-chevron-down nav-chevron"></i></button>
+            <ul class="dropdown">
+              <li><button onclick="triggerMockAction('Work expense')"><i class="fa-solid fa-receipt dropdown__icon"></i> Work expense</button></li>
+              <li><button onclick="triggerMockAction('Seat booking')"><i class="fa-solid fa-chair dropdown__icon"></i> Seat booking</button></li>
+              <li><button onclick="triggerMockAction('Ticketing')"><i class="fa-solid fa-ticket dropdown__icon"></i> Ticketing</button></li>
+              <li><button onclick="triggerMockAction('Timesheet')"><i class="fa-solid fa-clock dropdown__icon"></i> Timesheet</button></li>
+              <li><button onclick="triggerMockAction('Leave')"><i class="fa-solid fa-calendar-minus dropdown__icon"></i> Leave</button></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="community.html" class="nav-link"><i class="fa-solid fa-people-group nav-link__icon"></i> Community</a>
+          </li>
+          <li class="nav-item has-dropdown">
+            <button class="nav-link"><i class="fa-solid fa-grid-2 nav-link__icon"></i> Other <i class="fa-solid fa-chevron-down nav-chevron"></i></button>
+            <ul class="dropdown">
+              <li><button onclick="triggerMockAction('Learning')"><i class="fa-solid fa-graduation-cap dropdown__icon"></i> Learning</button></li>
+              <li><button onclick="triggerMockAction('Policies')"><i class="fa-solid fa-shield-halved dropdown__icon"></i> Policies</button></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-actions">
+        <button class="icon-btn--theme" onclick="toggleColorTheme()" title="Toggle Theme">
+          <i class="fa-solid fa-sun icon-theme--sun"></i>
+          <i class="fa-solid fa-moon icon-theme--moon"></i>
+        </button>
+
+        <div class="profile-chip--header" onclick="location.href='my_space.html'">
+          <img src="profile.jpeg" alt="Christo Siby" class="profile-chip__avatar">
+          <span class="profile-chip__name">Christo Siby.</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-section">
+      <div class="module-container">
+        
+        <!-- 1. Profile Hero Card -->
+        <div class="profile-hero-card">
+          <div class="profile-details-block">
+            <div class="profile-info-left">
+              <div class="profile-image-wrap scroll-reveal">
+                <div class="profile-onsite-indicator" title="Onsite Employee">
+                  <i class="fa-solid fa-plane-up"></i>
+                </div>
+                <svg class="profile-avatar-progress" viewBox="0 0 150 150">
+                  <circle class="bg" cx="75" cy="75" r="70"></circle>
+                  <circle class="fg" cx="75" cy="75" r="70" id="profile-progress-circle-myspace"></circle>
+                </svg>
+                <img src="profile.jpeg" alt="Christo Siby" class="profile-image">
+                <div class="profile-avatar-badge kpi-num-val">85%</div>
+              </div>
+              <div class="profile-meta-stack">
+                <h2 class="profile-name-title">Christo Siby <i class="fa-solid fa-circle-check verified-badge"></i></h2>
+                <span class="profile-role-sub" onclick="toggleGrowthModal()">
+                  Technical Lead
+                  <i class="fa-solid fa-arrow-trend-up"></i>
+                </span>
+                <div class="profile-tags-inline">
+                  <span class="profile-badge-small">Design & Product</span>
+                  <span class="profile-badge-small">Atlas Design System</span>
+                  <span class="profile-badge-small">Kochi, India</span>
+                </div>
+                <div class="profile-core-details-list">
+                  <span><strong>ID:</strong> BE1234</span>
+                  <span>·</span>
+                  <span><strong>Experience:</strong> <span class="kpi-num-val">5.7</span> Years</span>
+                  <span>·</span>
+                  <span><strong>Contract:</strong> Full Time</span>
+                  <span>·</span>
+                  <span><strong>Reports to:</strong> Vinod G</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-completion-box glass-panel reveal-item" style="padding: 16px;">
+              <div class="profile-completion-header">
+                <span class="lbl">Profile Completion</span>
+                <span class="val kpi-num-val" style="color:var(--brand-blue)">85%</span>
+              </div>
+              <div class="progress-track" style="height: 8px; margin: 8px 0;">
+                <div class="progress-fill" data-width="85%"></div>
+              </div>
+              <button class="complete-btn-action">Complete now <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- Moved inside: Personal Context Details -->
+          <div class="personal-context-bar">
+            <div class="status-pill-card glass-panel">
+              <div class="pulse-dot green"></div>
+              <div class="status-pill-info">
+                <span class="status-pill-val">Available</span>
+                <span class="status-pill-lbl">Allocations Capacity</span>
+              </div>
+            </div>
+            <div class="status-pill-card glass-panel">
+              <i class="fa-solid fa-house-laptop" style="color:var(--brand-blue)"></i>
+              <div class="status-pill-info">
+                <span class="status-pill-val">Hybrid</span>
+                <span class="status-pill-lbl">Work Mode</span>
+              </div>
+            </div>
+            <div class="status-pill-card glass-panel">
+              <i class="fa-solid fa-brain" style="color:var(--accent-violet)"></i>
+              <div class="status-pill-info">
+                <span class="status-pill-val">Figma, Framer, React</span>
+                <span class="status-pill-lbl">Skills Stack</span>
+              </div>
+            </div>
+            <div class="status-pill-card glass-panel">
+              <i class="fa-solid fa-language" style="color:var(--accent-cyan)"></i>
+              <div class="status-pill-info">
+                <span class="status-pill-val">EN, ML</span>
+                <span class="status-pill-lbl">Languages</span>
+              </div>
+            </div>
+            <div class="status-pill-card glass-panel">
+              <i class="fa-solid fa-envelope" style="color:var(--accent-amber)"></i>
+              <div class="status-pill-info">
+                <span class="status-pill-val">christo.siby@beinex.ai</span>
+                <span class="status-pill-lbl">Corporate Email</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Ranking & Insights -->
+          <div style="padding: 0 24px 24px;">
+            <h3 style="font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px;">Performance Ranking & Insights</h3>
+            <div class="glass-panel scroll-reveal" style="border-radius: 24px;">
+              <div class="ranking-card">
+                <!-- Overall Rank -->
+                <div class="ranking-card__overall reveal-item">
+                  <div class="ranking-card__rank-circle">
+                    <span class="ranking-card__rank-num kpi-num-val">#12</span>
+                    <span class="ranking-card__rank-total">out of 450</span>
+                  </div>
+                  <span class="ranking-card__rank-label">Overall Rank</span>
+                </div>
+
+                <!-- Breakdown -->
+                <div class="ranking-card__breakdown">
+                  <div class="ranking-metric reveal-item">
+                    <div class="ranking-metric__head">
+                      <span class="ranking-metric__label"><i class="fa-solid fa-clock"></i> Timesheet Compliance</span>
+                      <span class="ranking-metric__val kpi-num-val">98%</span>
+                    </div>
+                    <div class="progress-track" style="height: 8px;">
+                      <div class="progress-fill" data-width="98%" style="background: var(--accent-emerald);"></div>
+                    </div>
+                  </div>
+                  <div class="ranking-metric reveal-item">
+                    <div class="ranking-metric__head">
+                      <span class="ranking-metric__label"><i class="fa-solid fa-bullseye"></i> OKR Achievement</span>
+                      <span class="ranking-metric__val kpi-num-val">92%</span>
+                    </div>
+                    <div class="progress-track" style="height: 8px;">
+                      <div class="progress-fill" data-width="92%" style="background: var(--brand-blue);"></div>
+                    </div>
+                  </div>
+                  <div class="ranking-metric reveal-item">
+                    <div class="ranking-metric__head">
+                      <span class="ranking-metric__label"><i class="fa-solid fa-calendar-check"></i> Leave Management</span>
+                      <span class="ranking-metric__val kpi-num-val">85%</span>
+                    </div>
+                    <div class="progress-track" style="height: 8px;">
+                      <div class="progress-fill" data-width="85%" style="background: var(--accent-violet);"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Contextual Ranking -->
+                <div class="ranking-card__context">
+                  <div class="ranking-context-item reveal-item">
+                    <span class="ranking-context-label">Department Rank</span>
+                    <div class="ranking-context-val">#4 <span>/ 85</span></div>
+                  </div>
+                  <div class="ranking-context-item reveal-item">
+                    <span class="ranking-context-label">Vertical Rank</span>
+                    <div class="ranking-context-val">#8 <span>/ 120</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Tab Navigation -->
+        <div class="space-tabs-navigation">
+          <span class="space-nav-tab active">Overview</span>
+          <span class="space-nav-tab">Requests</span>
+          <span class="space-nav-tab">Projects</span>
+          <span class="space-nav-tab">Availability</span>
+          <span class="space-nav-tab">Performance</span>
+          <span class="space-nav-tab">Attendance</span>
+          <span class="space-nav-tab">Growth</span>
+          <span class="space-nav-tab">Documents</span>
+          <span class="space-nav-tab">Recognition</span>
+          <span class="space-nav-tab">Activity</span>
+          <span class="space-nav-tab">AI Workspace</span>
+        </div>
+
+        <!-- 5. Content Grid -->
+        <header class="section-header" style="margin-bottom: 32px;">
+          <h2 style="font-size: 24px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">Operational Workspace</h2>
+          <p style="color: var(--text-secondary); font-size: 15px;">Manage your active requests, track project allocations, and monitor your availability in one place.</p>
+        </header>
+        <div class="space-contents-grid">
+          
+          <!-- Column 1: Requests -->
+          <div class="glass-panel">
+            <div class="card-title-bar">
+              <h2>My Requests</h2>
+              <button class="link-action" onclick="triggerMockAction('View all requests')">View all <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div style="padding: 24px;">
+              <div class="requests-tabs">
+                <span class="request-tab active">All 8</span>
+                <span class="request-tab">HR 2</span>
+                <span class="request-tab">IT 2</span>
+                <span class="request-tab">Travel 1</span>
+              </div>
+              <div class="list-wrapper-scroll">
+                <div class="list-item-node">
+                  <div>
+                    <span class="node-title">Leave Request - Jul 14</span>
+                    <span class="node-sub">2 days</span>
+                  </div>
+                  <span class="status-badge in-review">In Review</span>
+                </div>
+                <div class="list-item-node">
+                  <div>
+                    <span class="node-title">Travel - Client Visit(Mumbai)</span>
+                    <span class="node-sub">Jul 21 - Jul 22</span>
+                  </div>
+                  <span class="status-badge approved">Approved</span>
+                </div>
+                <div class="list-item-node">
+                  <div>
+                    <span class="node-title">MacBook Pro - New Laptop</span>
+                    <span class="node-sub">Requested Jul 10</span>
+                  </div>
+                  <span class="status-badge in-progress">In Progress</span>
+                </div>
+                <div class="list-item-node">
+                  <div>
+                    <span class="node-title">Expense Claim - Jun 2025</span>
+                    <span class="node-sub">₹24,680</span>
+                  </div>
+                  <span class="status-badge pending">Pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Allocation -->
+          <div class="glass-panel">
+            <div class="card-title-bar">
+              <h2>My Project Allocation</h2>
+              <button class="link-action" onclick="triggerMockAction('View all allocations')">View all <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div style="padding: 24px;">
+              <div class="allocation-box">
+                <div class="allocation-metadata-line">
+                  <span class="lbl"><i class="fa-solid fa-building"></i> Client</span>
+                  <span class="val">Atlas Corp</span>
+                </div>
+                <div class="allocation-metadata-line">
+                  <span class="lbl"><i class="fa-solid fa-folder-tree"></i> Project</span>
+                  <span class="val" style="color:var(--brand-blue)">Atlas Design System</span>
+                </div>
+                <div class="allocation-metadata-line">
+                  <span class="lbl"><i class="fa-solid fa-user-tag"></i> Role</span>
+                  <span class="val">UI/UX Designer</span>
+                </div>
+                <div class="allocation-metadata-line">
+                  <span class="lbl"><i class="fa-solid fa-calendar-days"></i> Timeline</span>
+                  <span class="val">Jan 10 - Dec 20, 2025</span>
+                </div>
+                <div class="allocation-metadata-line">
+                  <span class="lbl"><i class="fa-solid fa-chart-line"></i> Billability</span>
+                  <span class="val">92%</span>
+                </div>
+                <div class="allocation-metadata-line">
+                  <span class="lbl"><i class="fa-solid fa-arrows-spin"></i> Current Sprint</span>
+                  <span class="val">Sprint 24</span>
+                </div>
+                <div class="allocation-metadata-line">
+                  <span class="lbl"><i class="fa-solid fa-code"></i> Tech Stack</span>
+                  <span class="val">Figma, React, TS</span>
+                </div>
+                <div class="allocation-metadata-line" style="border:none;">
+                  <span class="lbl"><i class="fa-solid fa-shield-heart"></i> Project Health</span>
+                  <span class="status-badge approved">Good</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Availability -->
+          <div class="glass-panel">
+            <div class="card-title-bar">
+              <h2>My Availability</h2>
+              <button class="link-action" onclick="triggerMockAction('View all availability')">View all <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div style="padding: 24px;">
+              <div class="allocation-box" style="margin-bottom: 20px;">
+                <div class="allocation-metadata-line">
+                  <span class="lbl">Current Capacity</span>
+                  <span class="val" style="color:var(--accent-rose)">85% <span style="font-size:0.65rem; color:var(--text-tertiary)">/ Ideal: 65%</span></span>
+                </div>
+                <div class="allocation-metadata-line">
+                  <span class="lbl">Bench Percentage</span>
+                  <span class="val">15%</span>
+                </div>
+                <div class="allocation-metadata-line">
+                  <span class="lbl">Free From</span>
+                  <span class="val">Jul 20, 2026</span>
+                </div>
+                <div class="allocation-metadata-line" style="border:none;">
+                  <span class="lbl">Upcoming Allocation</span>
+                  <span class="val" style="color:var(--brand-blue)">Fintech Mobile App</span>
+                </div>
+              </div>
+
+              <div class="calendar-card glass-panel" style="background:var(--bg-muted)">
+                <div class="calendar-head">
+                  <h4>July 2026</h4>
+                  <div class="calendar-month-arrows">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <i class="fa-solid fa-chevron-right"></i>
+                  </div>
+                </div>
+                <div class="calendar-box-grid">
+                  <div class="calendar-day-lbl">Mo</div><div class="calendar-day-lbl">Tu</div><div class="calendar-day-lbl">We</div><div class="calendar-day-lbl">Th</div><div class="calendar-day-lbl">Fr</div><div class="calendar-day-lbl">Sa</div><div class="calendar-day-lbl">Su</div>
+                  <div class="calendar-day-node" style="opacity:0.3">29</div><div class="calendar-day-node" style="opacity:0.3">30</div><div class="calendar-day-node">1</div><div class="calendar-day-node">2</div><div class="calendar-day-node">3</div><div class="calendar-day-node">4</div><div class="calendar-day-node">5</div>
+                  <div class="calendar-day-node active-day">6</div><div class="calendar-day-node visit-day">7</div><div class="calendar-day-node">8</div><div class="calendar-day-node">9</div><div class="calendar-day-node">10</div><div class="calendar-day-node">11</div><div class="calendar-day-node">12</div>
+                  <div class="calendar-day-node">13</div><div class="calendar-day-node leave-day">14</div><div class="calendar-day-node leave-day">15</div><div class="calendar-day-node leave-day">16</div><div class="calendar-day-node">17</div><div class="calendar-day-node">18</div><div class="calendar-day-node">19</div>
+                  <div class="calendar-day-node">20</div><div class="calendar-day-node visit-day">21</div><div class="calendar-day-node visit-day">22</div><div class="calendar-day-node">23</div><div class="calendar-day-node">24</div><div class="calendar-day-node">25</div><div class="calendar-day-node">26</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="module-container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <div class="logo">
+            <img src="beinex-ai-logo-dark.svg" alt="Beinex AI" class="footer-logo__img" id="footer-logo-img" style="height: 32px;">
+          </div>
+          <p>Your intelligent workplace companion. Empowering people through AI-driven insights and seamless experiences.</p>
+          <div class="footer__social">
+            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+          <div class="footer__links">
+            <h4>Platform</h4>
+            <ul>
+              <li><a href="portal_home_page.html">Home</a></li>
+              <li><a href="my_space.html">My Space</a></li>
+              <li><a href="community.html">Community</a></li>
+              <li><a href="#">People Directory</a></li>
+            </ul>
+          </div>
+        <div class="footer__links">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">IT Ticketing</a></li>
+            <li><a href="#">HR Policies</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer__newsletter">
+          <h4>Stay Connected</h4>
+          <p>Get the latest updates on new features and workplace insights.</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Work email">
+            <button><i class="fa-solid fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 Beinex AI. All rights reserved.</p>
+        <div class="footer__bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Settings</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- QUICK ACCESS (Beinex B Button) -->
+  <!-- ─── QUICK ACCESS (radial AssistiveTouch) ─── -->
+  <div class="assistive-container" id="assistiveTouch" aria-label="Quick access">
+    <button type="button" class="touch-button" id="touchBtn" aria-label="Quick actions" aria-expanded="false" aria-controls="quickAccessMenu" title="Quick actions">
+      <span class="touch-button__pulse" aria-hidden="true"></span>
+      <span class="touch-button__icons" aria-hidden="true">
+        <i class="fa-solid fa-bolt touch-button__icon touch-button__icon--rest"></i>
+        <i class="fa-solid fa-xmark touch-button__icon touch-button__icon--open"></i>
+      </span>
+    </button>
+    <div class="radial-menu" id="quickAccessMenu" role="menu">
+      <button type="button" class="menu-item" role="menuitem" data-tooltip="Log Time" onclick="triggerMockAction('Log Time')"><i class="fa-solid fa-clock" style="color:var(--accent-p)" aria-hidden="true"></i></button>
+      <button type="button" class="menu-item" role="menuitem" data-tooltip="Book Seat" onclick="triggerMockAction('Book Seat')"><i class="fa-solid fa-chair" style="color:var(--accent-violet)" aria-hidden="true"></i></button>
+      <button type="button" class="menu-item" role="menuitem" data-tooltip="Raise Ticket" onclick="triggerMockAction('Raise Ticket')"><i class="fa-solid fa-ticket" style="color:var(--accent-amber)" aria-hidden="true"></i></button>
+      <button type="button" class="menu-item" role="menuitem" data-tooltip="Apply Leave" onclick="triggerMockAction('Apply Leave')"><i class="fa-solid fa-calendar-check" style="color:var(--accent-emerald)" aria-hidden="true"></i></button>
+      <button type="button" class="menu-item" role="menuitem" data-tooltip="Expense Claim" onclick="triggerMockAction('Expense Claim')"><i class="fa-solid fa-receipt" style="color:var(--accent-cyan)" aria-hidden="true"></i></button>
+      <button type="button" class="menu-item" role="menuitem" data-tooltip="Travel Request" onclick="triggerMockAction('Travel Request')"><i class="fa-solid fa-plane" style="color:var(--accent-violet)" aria-hidden="true"></i></button>
+      <button type="button" class="menu-item" role="menuitem" data-tooltip="Asset Request" onclick="triggerMockAction('Asset Request')"><i class="fa-solid fa-laptop" style="color:var(--accent-rose)" aria-hidden="true"></i></button>
+      <button type="button" class="menu-item" role="menuitem" data-tooltip="Policy Center" onclick="triggerMockAction('Policy Center')"><i class="fa-solid fa-file-shield" style="color:var(--accent-rose)" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const THEME_STORAGE_KEY = 'pp-theme';
+    let currentTheme = 'dark';
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      currentTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', currentTheme);
+    }
+
+    function toggleColorTheme() {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      localStorage.setItem(THEME_STORAGE_KEY, currentTheme);
+      updateLogo();
+    }
+
+    function updateLogo() {
+      const logoImg = document.getElementById('nav-logo-img');
+      const footerLogoImg = document.getElementById('footer-logo-img');
+      const logoSrc = currentTheme === 'dark' ? 'beinex-ai-logo-dark.svg' : 'beinex-ai-logo-light.png';
+      
+      if (logoImg) logoImg.src = logoSrc;
+      if (footerLogoImg) footerLogoImg.src = logoSrc;
+    }
+
+    function initMobileNav() {
+      const toggle = document.getElementById('mobile-nav-toggle');
+      const drawer = document.getElementById('nav-menu-drawer');
+      
+      if (toggle && drawer) {
+        toggle.addEventListener('click', () => {
+          toggle.classList.toggle('is-active');
+          drawer.classList.toggle('is-active');
+        });
+      }
+
+      // Handle mobile dropdowns
+      document.querySelectorAll('.has-dropdown > .nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            link.parentElement.classList.toggle('is-active');
+          }
+        });
+      });
+    }
+
+    function triggerMockAction(name) { alert("Action: " + name); }
+
+    function initScrollObserver() {
+      const scrollContainer = document.querySelector('.dashboard-body-scroll');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            
+            // Staggered reveal of internal items
+            const revealItems = entry.target.querySelectorAll('.reveal-item');
+            revealItems.forEach((item, index) => {
+              setTimeout(() => {
+                if (entry.target.classList.contains('in-view')) {
+                  item.classList.add('active');
+                }
+              }, index * 80);
+            });
+
+            // Trigger counting animation for numbers
+            const numVals = entry.target.querySelectorAll('.kpi-num-val');
+            numVals.forEach(num => {
+              if (num.dataset.animated) return;
+              const text = num.innerText;
+              const value = parseFloat(text.replace(/[^0-9.]/g, ''));
+              if (!isNaN(value)) {
+                if (!num.dataset.original) num.dataset.original = text;
+                
+                // Celebration callback for rank number
+                const callback = num.classList.contains('ranking-card__rank-num') ? () => triggerCelebration(num) : null;
+                animateValue(num, 0, value, 1200, callback);
+                num.dataset.animated = "true";
+              }
+            });
+
+            // Handle progress bars
+            const progressBars = entry.target.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+              const targetWidth = bar.getAttribute('data-width');
+              if (targetWidth) {
+                setTimeout(() => {
+                  bar.style.width = targetWidth;
+                }, 200);
+              }
+            });
+
+            // Handle profile progress circle
+            const progressCircle = entry.target.querySelector('#profile-progress-circle-myspace');
+            if (progressCircle && !progressCircle.dataset.animated) {
+              const circumference = 440;
+              const offset = circumference - (0.85 * circumference);
+              setTimeout(() => {
+                progressCircle.style.strokeDashoffset = offset;
+              }, 300);
+              progressCircle.dataset.animated = "true";
+            }
+
+            // Handle onsite indicator reveal
+            const onsiteIndicator = entry.target.querySelector('.profile-onsite-indicator');
+            if (onsiteIndicator) {
+              setTimeout(() => onsiteIndicator.classList.add('active'), 600);
+            }
+          } else {
+            // Un-reveal when leaving viewport
+            entry.target.classList.remove('in-view');
+            const revealItems = entry.target.querySelectorAll('.reveal-item');
+            revealItems.forEach(item => item.classList.remove('active'));
+
+            const onsiteIndicator = entry.target.querySelector('.profile-onsite-indicator');
+            if (onsiteIndicator) onsiteIndicator.classList.remove('active');
+            
+            // Reset progress bars
+            const progressBars = entry.target.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+              bar.style.width = '0';
+            });
+
+            // Reset animation flag so it can play again
+            const numVals = entry.target.querySelectorAll('.kpi-num-val');
+            numVals.forEach(num => {
+              num.dataset.animated = "";
+              if (num.dataset.original) num.innerText = num.dataset.original.replace(/[0-9.]+/g, '0');
+            });
+
+            const progressCircle = entry.target.querySelector('#profile-progress-circle-myspace');
+            if (progressCircle) {
+              progressCircle.style.strokeDashoffset = "440";
+              progressCircle.dataset.animated = "";
+            }
+          }
+        });
+      }, { 
+        threshold: 0.1,
+        root: scrollContainer
+      });
+
+      document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+    }
+
+    function animateValue(obj, start, end, duration, callback) {
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const current = progress * (end - start) + start;
+        
+        const original = obj.dataset.original || obj.innerText;
+        
+        if (original.includes('%')) {
+          obj.innerHTML = Math.floor(current) + '%';
+        } else if (original.includes('/')) {
+          const parts = original.split('/');
+          const total = parts[1].trim();
+          obj.innerHTML = current.toFixed(1) + ' / ' + total;
+        } else if (original.toLowerCase().includes('days')) {
+          obj.innerHTML = Math.floor(current) + ' Days';
+        } else if (original.startsWith('#')) {
+          obj.innerHTML = '#' + Math.floor(current);
+        } else {
+          obj.innerHTML = Math.floor(current);
+        }
+        
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        } else {
+          obj.innerHTML = original;
+          if (callback) callback();
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    function triggerCelebration(el) {
+      const parent = el.closest('.ranking-card__rank-circle');
+      if (!parent) return;
+
+      const colors = ['#007bff', '#8b5cf6', '#f59e0b', '#10b981', '#06b6d4', '#f43f5e'];
+      const particleCount = 24;
+
+      for (let i = 0; i < particleCount; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-particle';
+        
+        const angle = (Math.PI * 2 * i) / particleCount;
+        const dist = 60 + Math.random() * 60;
+        const tx = Math.cos(angle) * dist;
+        const ty = Math.sin(angle) * dist;
+        const tr = Math.random() * 360;
+
+        p.style.setProperty('--tx', `${tx}px`);
+        p.style.setProperty('--ty', `${ty}px`);
+        p.style.setProperty('--tr', `${tr}deg`);
+        p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        p.style.left = '50%';
+        p.style.top = '50%';
+        p.style.marginLeft = '-4px';
+        p.style.marginTop = '-4px';
+
+        parent.appendChild(p);
+        setTimeout(() => p.remove(), 1500);
+      }
+
+      // Add a scale pop effect to the circle
+      parent.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      parent.style.transform = 'scale(1.15)';
+      setTimeout(() => {
+        parent.style.transform = 'scale(1)';
+      }, 300);
+    }
+
+    function initQuickAccess() {
+      const container = document.getElementById('assistiveTouch');
+      const touchBtn = document.getElementById('touchBtn');
+      if (!container || !touchBtn) return;
+
+      const menuItems = Array.from(container.querySelectorAll('.menu-item'));
+      let isDragging = false;
+      let didDrag = false;
+      let startX = 0;
+      let startY = 0;
+      let initialX = 0;
+      let initialY = 0;
+      let dockedLeft = null;
+      let dockedTop = null;
+      const dragThreshold = 5;
+      const edgePadding = 16;
+      const itemSize = 52;
+      const itemGap = 8;
+      const count = menuItems.length;
+      
+      const radiusDistance = count > 1
+        ? (itemSize + itemGap) / (2 * Math.sin(Math.PI / (2 * (count - 1))))
+        : 72;
+      const openClearanceY = radiusDistance + itemSize / 2 + 10;
+
+      function getPoint(e) {
+        if (e.type.includes('touch')) {
+          const t = e.touches[0] || e.changedTouches[0];
+          return { x: t.clientX, y: t.clientY };
+        }
+        return { x: e.clientX, y: e.clientY };
+      }
+
+      function rememberDock() {
+        const rect = container.getBoundingClientRect();
+        dockedLeft = rect.left;
+        dockedTop = rect.top;
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(value, max));
+      }
+
+      function getSide() {
+        const rect = container.getBoundingClientRect();
+        return (rect.left + rect.width / 2) > (window.innerWidth / 2) ? 'right' : 'left';
+      }
+
+      function getVerticalCenterTop() {
+        return Math.round((window.innerHeight - container.offsetHeight) / 2);
+      }
+
+      function placeForOpenMenu() {
+        const rect = container.getBoundingClientRect();
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const side = getSide();
+        const btnW = container.offsetWidth;
+        const btnH = container.offsetHeight;
+
+        const targetX = side === 'right'
+          ? screenWidth - btnW - edgePadding
+          : edgePadding;
+        const targetY = clamp(
+          rect.top,
+          openClearanceY,
+          screenHeight - btnH - openClearanceY
+        );
+
+        container.classList.add('opening');
+        container.style.left = `${targetX}px`;
+        container.style.top = `${targetY}px`;
+      }
+
+      function restoreDock() {
+        if (dockedLeft == null || dockedTop == null) return;
+        container.classList.add('opening');
+        container.style.left = `${dockedLeft}px`;
+        container.style.top = `${dockedTop}px`;
+      }
+
+      function arrangeMenuItems() {
+        const side = getSide();
+        container.classList.toggle('menu-side-left', side === 'right');
+        container.classList.toggle('menu-side-right', side === 'left');
+
+        const denom = Math.max(count - 1, 1);
+        const baseAngle = side === 'right' ? Math.PI : 0;
+        const angleSpread = Math.PI;
+
+        menuItems.forEach((item, index) => {
+          const factor = index - (count - 1) / 2;
+          const angle = baseAngle + (factor * (angleSpread / denom));
+          const xOffset = Math.round(Math.cos(angle) * radiusDistance);
+          const yOffset = Math.round(Math.sin(angle) * radiusDistance);
+          item.style.setProperty('--mx', `${xOffset}px`);
+          item.style.setProperty('--my', `${yOffset}px`);
+          item.style.zIndex = String(10 + index);
+        });
+      }
+
+      function clearMenuItems() {
+        menuItems.forEach((item) => {
+          item.style.setProperty('--mx', '0px');
+          item.style.setProperty('--my', '0px');
+        });
+      }
+
+      function closeMenu() {
+        const wasOpen = container.classList.contains('open');
+        container.classList.remove('open', 'menu-side-left', 'menu-side-right');
+        touchBtn.setAttribute('aria-expanded', 'false');
+        touchBtn.setAttribute('aria-label', 'Quick actions');
+        touchBtn.setAttribute('title', 'Quick actions');
+        clearMenuItems();
+        if (wasOpen) {
+          restoreDock();
+        }
+        return wasOpen;
+      }
+
+      function openMenu() {
+        rememberDock();
+        placeForOpenMenu();
+        requestAnimationFrame(() => {
+          arrangeMenuItems();
+          container.classList.add('open');
+          touchBtn.setAttribute('aria-expanded', 'true');
+          touchBtn.setAttribute('aria-label', 'Close quick actions');
+          touchBtn.setAttribute('title', 'Close');
+        });
+      }
+
+      function toggleMenu() {
+        if (container.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      }
+
+      function updateDockSide() {
+        const side = getSide();
+        container.classList.toggle('dock-left', side === 'left');
+        container.classList.toggle('dock-right', side === 'right');
+      }
+
+      function dockToEdge(forceVerticalCenter) {
+        container.classList.add('docking');
+        container.classList.remove('opening');
+        const rect = container.getBoundingClientRect();
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const buttonWidth = container.offsetWidth;
+        const buttonHeight = container.offsetHeight;
+        const currentCenterX = rect.left + buttonWidth / 2;
+
+        let targetX = edgePadding;
+        if (currentCenterX > screenWidth / 2) {
+          targetX = screenWidth - buttonWidth - edgePadding;
+        }
+
+        const minY = edgePadding;
+        const maxY = screenHeight - buttonHeight - edgePadding;
+        const targetY = forceVerticalCenter
+          ? clamp(getVerticalCenterTop(), minY, Math.max(minY, maxY))
+          : clamp(rect.top, minY, Math.max(minY, maxY));
+
+        container.style.left = `${targetX}px`;
+        container.style.top = `${targetY}px`;
+        rememberDock();
+        updateDockSide();
+      }
+
+      function startDrag(e) {
+        didDrag = false;
+        isDragging = false;
+        container.classList.remove('docking', 'opening');
+
+        const point = getPoint(e);
+        startX = point.x;
+        startY = point.y;
+
+        const rect = container.getBoundingClientRect();
+        initialX = rect.left;
+        initialY = rect.top;
+
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchmove', drag, { passive: false });
+        document.addEventListener('touchend', stopDrag);
+      }
+
+      function drag(e) {
+        const point = getPoint(e);
+        const dx = point.x - startX;
+        const dy = point.y - startY;
+
+        if (!isDragging && (Math.abs(dx) > dragThreshold || Math.abs(dy) > dragThreshold)) {
+          isDragging = true;
+          didDrag = true;
+          closeMenu();
+        }
+
+        if (isDragging) {
+          if (e.cancelable) e.preventDefault();
+          container.style.left = `${initialX + dx}px`;
+          container.style.top = `${initialY + dy}px`;
+        }
+      }
+
+      function stopDrag() {
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchmove', drag);
+        document.removeEventListener('touchend', stopDrag);
+
+        if (isDragging) {
+          dockToEdge(false);
+        }
+        isDragging = false;
+      }
+
+      touchBtn.addEventListener('mousedown', startDrag);
+      touchBtn.addEventListener('touchstart', startDrag, { passive: false });
+
+      touchBtn.addEventListener('click', (e) => {
+        if (didDrag) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        toggleMenu();
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!container.contains(e.target) && container.classList.contains('open')) {
+          closeMenu();
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        if (container.classList.contains('open')) {
+          closeMenu();
+        }
+        dockToEdge(false);
+      });
+
+      // Initial dock
+      dockToEdge(true);
+    }
+
+    function toggleGrowthModal() {
+      const modal = document.getElementById('growthModal');
+      if (modal) {
+        modal.classList.toggle('is-active');
+        if (modal.classList.contains('is-active')) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
+      }
+    }
+
+    window.onload = () => {
+      initTheme();
+      updateLogo();
+      initMobileNav();
+      initQuickAccess();
+      initScrollObserver();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+  </script>
+  <!-- GROWTH JOURNEY MODAL -->
+  <div class="growth-modal" id="growthModal">
+    <div class="growth-modal__overlay" onclick="toggleGrowthModal()"></div>
+    <div class="growth-modal__content">
+      <button class="growth-modal__close" onclick="toggleGrowthModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      
+      <div class="growth-header">
+        <h2>Career Growth Journey</h2>
+        <p>Tracking your professional evolution at Beinex</p>
+      </div>
+
+      <div class="growth-timeline">
+        <div class="growth-timeline__line"></div>
+        
+        <!-- Software Developer -->
+        <div class="growth-item is-past">
+          <div class="growth-dot"></div>
+          <div class="growth-content">
+            <span class="growth-date">Jan 2022 - Dec 2023</span>
+            <span class="growth-role">Software Developer</span>
+            <p class="growth-desc">Started as a junior developer focusing on core platform features and frontend components.</p>
+            <div class="growth-skills">
+              <span class="growth-skill">JavaScript</span>
+              <span class="growth-skill">HTML/CSS</span>
+              <span class="growth-skill">Vue.js</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Senior Software Developer -->
+        <div class="growth-item is-past">
+          <div class="growth-dot"></div>
+          <div class="growth-content">
+            <span class="growth-date">Jan 2024 - Jun 2025</span>
+            <span class="growth-role">Senior Software Developer</span>
+            <p class="growth-desc">Led the redesign of the analytics dashboard and mentored junior developers in best practices.</p>
+            <div class="growth-skills">
+              <span class="growth-skill">React</span>
+              <span class="growth-skill">Architecture</span>
+              <span class="growth-skill">Team Lead</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Technical Lead -->
+        <div class="growth-item is-current">
+          <div class="growth-dot"></div>
+          <div class="growth-content">
+            <span class="growth-date">Jul 2025 - Present</span>
+            <span class="growth-role">Technical Lead</span>
+            <p class="growth-desc">Overseeing the entire engineering team and driving the AI-first strategy for the People Portal.</p>
+            <div class="growth-skills">
+              <span class="growth-skill">AI/ML</span>
+              <span class="growth-skill">Strategy</span>
+              <span class="growth-skill">Cloud Arch</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="growth-next">
+        <span class="growth-next__label">Next Milestone Goal</span>
+        <div class="growth-next__role">
+          <i class="fa-solid fa-star"></i>
+          Engineering Manager
+        </div>
+        <div class="growth-progress-mini">
+          <div class="growth-progress-mini__fill"></div>
+        </div>
+        <p style="font-size: 11px; color: var(--text-secondary); margin-top: 10px;">65% progress towards next career level</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>People Portal</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,sans-serif;
+}
+
+body{
+
+background:#f4f7fc;
+
+color:#24324a;
+
+}
+
+:root{
+
+--primary:#247CFF;
+--primary-light:#eaf3ff;
+
+--text:#24324a;
+
+--border:#e4ebf5;
+
+--shadow:0 15px 40px rgba(20,40,80,.08);
+
+--radius:18px;
+
+}
+
+header{
+
+position:sticky;
+top:18px;
+
+width:98%;
+margin:auto;
+
+z-index:1000;
+
+background:rgba(255,255,255,.72);
+
+backdrop-filter:blur(24px);
+
+border:1px solid rgba(255,255,255,.35);
+
+border-radius:24px;
+
+box-shadow:
+0 15px 40px rgba(30,40,80,.08),
+0 1px 0 rgba(255,255,255,.8) inset;
+
+transition:.35s;
+
+}
+
+.header-container{
+
+max-width:1500px;
+
+margin:auto;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:25px;
+
+}
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+font-size:34px;
+
+font-weight:800;
+
+}
+
+.logo span:first-child{
+
+color:#0e4d92;
+
+}
+
+.logo span:last-child{
+
+color:#29b6ff;
+
+}
+
+nav{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+flex:1;
+
+justify-content:center;
+
+}
+
+.nav-item{
+
+position:relative;
+
+display:flex;
+align-items:center;
+gap:10px;
+
+padding:14px 18px;
+
+border-radius:16px;
+
+cursor:pointer;
+
+font-weight:600;
+
+transition:.30s;
+
+overflow:hidden;
+
+}
+
+.nav-item::before{
+
+content:"";
+
+position:absolute;
+
+left:0;
+bottom:0;
+
+height:3px;
+width:0;
+
+background:linear-gradient(90deg,#4F8CFF,#6B5BFF);
+
+transition:.35s;
+
+}
+
+.nav-item:hover::before{
+
+width:100%;
+
+}
+
+.nav-item:hover{
+
+background:white;
+
+transform:translateY(-2px);
+
+box-shadow:0 10px 25px rgba(30,60,120,.08);
+
+}
+
+.nav-item.active{
+
+background:var(--primary-light);
+
+color:var(--primary);
+
+}
+
+.nav-item i{
+
+font-size:15px;
+
+}
+
+.right-panel{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+}
+
+.search{
+
+position:relative;
+
+}
+
+.search input{
+
+width:270px;
+height:48px;
+
+background:rgba(255,255,255,.65);
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(200,210,230,.6);
+
+border-radius:40px;
+
+padding-left:48px;
+
+transition:.35s;
+
+}
+
+.search input:focus{
+
+width:340px;
+
+border-color:#4F8CFF;
+
+box-shadow:
+
+0 0 0 5px rgba(79,140,255,.12);
+
+}
+
+.search i{
+
+position:absolute;
+
+left:18px;
+
+top:15px;
+
+color:#7a8ba5;
+
+}
+
+.icon-btn{
+
+width:48px;
+height:48px;
+
+border-radius:16px;
+
+background:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+transition:.30s;
+
+border:1px solid #E5ECF6;
+
+cursor:pointer;
+
+}
+
+.icon-btn:hover{
+
+transform:translateY(-3px);
+
+background:#F5F9FF;
+
+box-shadow:0 10px 25px rgba(40,80,150,.12);
+
+}
+.profile{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+padding:8px 10px;
+
+border-radius:40px;
+
+background:white;
+
+border:1px solid #E7EDF6;
+
+transition:.35s;
+
+}
+
+.profile:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 15px 35px rgba(30,60,120,.12);
+
+}
+
+.profile img{
+
+width:48px;
+height:48px;
+
+border-radius:50%;
+
+border:3px solid white;
+
+box-shadow:0 8px 18px rgba(0,0,0,.12);
+
+}
+
+.profile h4{
+
+font-size:15px;
+
+}
+
+.profile span{
+
+font-size:12px;
+
+color:#7c8aa5;
+
+display:block;
+
+}
+
+.hero{
+
+height:650px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+position:relative;
+
+overflow:hidden;
+
+background:
+
+linear-gradient(180deg,#F8FBFF,#EEF5FF);
+
+}
+
+.hero h1{
+
+font-size:64px;
+
+font-weight:800;
+
+color:#1C3155;
+
+}
+
+.hero p{
+
+margin-top:20px;
+
+font-size:22px;
+
+color:#71839D;
+
+}
+
+.floating{
+
+position:absolute;
+
+border-radius:50%;
+
+filter:blur(50px);
+
+animation:float 10s infinite ease-in-out;
+
+}
+
+.one{
+
+width:250px;
+height:250px;
+
+background:#B6D7FF;
+
+left:8%;
+top:15%;
+
+}
+
+.two{
+
+width:320px;
+height:320px;
+
+background:#CFC7FF;
+
+right:12%;
+top:20%;
+
+animation-delay:2s;
+
+}
+
+.three{
+
+width:220px;
+height:220px;
+
+background:#D8FFF2;
+
+bottom:10%;
+left:35%;
+
+animation-delay:4s;
+
+}
+
+@keyframes float{
+
+0%{transform:translateY(0px);}
+50%{transform:translateY(-35px);}
+100%{transform:translateY(0px);}
+
+}
+
+@media(max-width:1200px){
+
+.search{
+display:none;
+}
+
+}
+
+@media(max-width:980px){
+
+nav{
+
+display:none;
+
+}
+
+}
+.mega-parent{
+
+position:relative;
+
+}
+
+.mega-menu{
+
+position:absolute;
+
+left:-80px;
+
+top:74px;
+
+width:920px;
+
+padding:28px;
+
+border-radius:28px;
+
+background:rgba(255,255,255,.82);
+
+backdrop-filter:blur(25px);
+
+border:1px solid rgba(255,255,255,.5);
+
+box-shadow:
+
+0 30px 70px rgba(25,40,80,.15);
+
+opacity:0;
+
+visibility:hidden;
+
+transform:translateY(15px);
+
+transition:.35s;
+
+}
+
+.mega-parent:hover .mega-menu{
+
+opacity:1;
+
+visibility:visible;
+
+transform:translateY(0);
+
+}
+
+.mega-title{
+
+margin-bottom:24px;
+
+}
+
+.mega-title{
+
+font-size:22px;
+
+font-weight:700;
+
+}
+
+.mega-title span{
+
+display:block;
+
+margin-top:6px;
+
+font-size:14px;
+
+color:#7f8ca4;
+
+font-weight:500;
+
+}
+
+.mega-grid{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:18px;
+
+}
+
+.mega-card{
+
+padding:22px;
+
+border-radius:20px;
+
+background:white;
+
+transition:.35s;
+
+cursor:pointer;
+
+position:relative;
+
+overflow:hidden;
+
+}
+
+.mega-card::after{
+
+content:"";
+
+position:absolute;
+
+left:0;
+top:0;
+
+height:4px;
+
+width:100%;
+
+background:linear-gradient(90deg,#4F8CFF,#7C5CFF);
+
+transform:scaleX(0);
+
+transition:.35s;
+
+}
+
+.mega-card:hover::after{
+
+transform:scaleX(1);
+
+}
+
+.mega-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:
+
+0 20px 45px rgba(30,50,100,.10);
+
+}
+
+.mega-card i{
+
+width:54px;
+
+height:54px;
+
+border-radius:14px;
+
+background:#edf5ff;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:22px;
+
+color:#247cff;
+
+margin-bottom:16px;
+
+}
+
+.mega-card h4{
+
+margin-bottom:8px;
+
+font-size:17px;
+
+}
+
+.mega-card p{
+
+font-size:13px;
+
+line-height:1.5;
+
+color:#7a879b;
+
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="header-container">
+
+<div class="logo">
+
+<span>BEINEX</span><span>.ai</span>
+
+</div>
+
+<nav>
+
+    <div class="nav-item active">
+        <i class="fa-solid fa-house"></i>
+        Home
+    </div>
+
+    <div class="nav-item mega-parent">
+
+        <i class="fa-solid fa-building"></i>
+
+        Workplace
+
+        <i class="fa-solid fa-angle-down"></i>
+
+        <div class="mega-menu">
+
+            <div class="mega-title">
+
+                Workplace
+
+                <span>Everything related to employees</span>
+
+            </div>
+
+            <div class="mega-grid">
+
+                <div class="mega-card">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <h4>My Space</h4>
+
+                    <p>Personal dashboard, profile and activities</p>
+
+                </div>
+
+                <div class="mega-card">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <h4>Employees</h4>
+
+                    <p>Directory and employee management</p>
+
+                </div>
+
+                <div class="mega-card">
+
+                    <i class="fa-solid fa-calendar-check"></i>
+
+                    <h4>Leave</h4>
+
+                    <p>Leave requests and balances</p>
+
+                </div>
+
+                <div class="mega-card">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    <h4>Attendance</h4>
+
+                    <p>Time tracking and attendance</p>
+
+                </div>
+
+                <div class="mega-card">
+
+                    <i class="fa-solid fa-laptop"></i>
+
+                    <h4>Assets</h4>
+
+                    <p>Assigned company assets</p>
+
+                </div>
+
+                <div class="mega-card">
+
+                    <i class="fa-solid fa-sitemap"></i>
+
+                    <h4>Organization</h4>
+
+                    <p>Departments and reporting hierarchy</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="nav-item mega-parent">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        Performance
+
+        <i class="fa-solid fa-angle-down"></i>
+
+        <div class="mega-menu">
+
+            <div class="mega-title">
+
+                Performance
+
+                <span>Growth and achievements</span>
+
+            </div>
+
+            <div class="mega-grid">
+
+                <div class="mega-card">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <h4>OKR</h4>
+                    <p>Objectives & Key Results</p>
+                </div>
+
+                <div class="mega-card">
+                    <i class="fa-solid fa-star"></i>
+                    <h4>Appraisal</h4>
+                    <p>Employee reviews</p>
+                </div>
+
+                <div class="mega-card">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <h4>Goals</h4>
+                    <p>Track goals and milestones</p>
+                </div>
+
+                <div class="mega-card">
+                    <i class="fa-solid fa-comments"></i>
+                    <h4>Feedback</h4>
+                    <p>Continuous feedback</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="nav-item mega-parent">
+
+        <i class="fa-solid fa-briefcase"></i>
+
+        Services
+
+        <i class="fa-solid fa-angle-down"></i>
+
+        <div class="mega-menu">
+
+            <div class="mega-title">
+
+                Services
+
+                <span>Employee self service</span>
+
+            </div>
+
+            <div class="mega-grid">
+
+                <div class="mega-card">
+                    <i class="fa-solid fa-file"></i>
+                    <h4>Documents</h4>
+                    <p>Letters & certificates</p>
+                </div>
+
+                <div class="mega-card">
+                    <i class="fa-solid fa-wallet"></i>
+                    <h4>Payroll</h4>
+                    <p>Salary & payslips</p>
+                </div>
+
+                <div class="mega-card">
+                    <i class="fa-solid fa-headset"></i>
+                    <h4>Helpdesk</h4>
+                    <p>Support requests</p>
+                </div>
+
+                <div class="mega-card">
+                    <i class="fa-solid fa-ticket"></i>
+                    <h4>Requests</h4>
+                    <p>General service requests</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="nav-item">
+
+        <i class="fa-solid fa-ellipsis"></i>
+
+        More
+
+    </div>
+
+</nav>
+
+<div class="right-panel">
+
+<div class="search">
+
+<i class="fa-solid fa-magnifying-glass"></i>
+
+<input placeholder="Search anything...">
+
+</div>
+
+<div class="icon-btn">
+
+<i class="fa-regular fa-bell"></i>
+
+</div>
+
+<div class="icon-btn">
+
+<i class="fa-solid fa-gear"></i>
+
+</div>
+
+<div class="profile">
+
+<img src="https://i.pravatar.cc/100">
+
+<div>
+
+<h4>Christo Siby</h4>
+
+<span>Software Engineer</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<section class="hero">
+
+<div class="floating one"></div>
+
+<div class="floating two"></div>
+
+<div class="floating three"></div>
+
+<h1>
+
+Welcome to People Portal
+
+</h1>
+
+<p>
+
+AI Powered Digital Workplace
+
+</p>
+
+</section>
+
+</body>
+
+</html>
