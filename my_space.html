@@ -205,7 +205,8 @@
     .dropdown li { list-style: none; margin-bottom: 2px; }
     .dropdown li:last-child { margin-bottom: 0; }
 
-    .dropdown button {
+    .dropdown button,
+    .dropdown a {
       width: 100%;
       text-align: left;
       padding: 10px 14px;
@@ -222,9 +223,11 @@
       transition: 0.2s;
       white-space: nowrap;
       font-family: inherit;
+      text-decoration: none;
     }
 
-    .dropdown button:hover {
+    .dropdown button:hover,
+    .dropdown a:hover {
       background: rgba(var(--color-brand-rgb), 0.08);
       color: var(--brand-blue);
     }
@@ -1616,7 +1619,7 @@
           <li class="nav-item has-dropdown">
             <button class="nav-link"><i class="fa-solid fa-chart-line nav-link__icon"></i> Performance <i class="fa-solid fa-chevron-down nav-chevron"></i></button>
             <ul class="dropdown">
-              <li><button onclick="triggerMockAction('OKRs')"><i class="fa-solid fa-target-arrow dropdown__icon"></i> OKRs</button></li>
+              <li><a href="okr.html"><i class="fa-solid fa-bullseye dropdown__icon"></i> OKRs</a></li>
             </ul>
           </li>
           <li class="nav-item has-dropdown">

@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OKR Intelligence Hub | Beinex AI People Portal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+
+  <script>
+    (function () {
+      var key = 'pp-theme';
+      var saved = localStorage.getItem(key);
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <style>
+    :root {
+      --font-main: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --brand-blue: #007bff;
+      --brand-sky: #38bdf8;
+      --accent-indigo: #6366f1;
+      --bg-app: #ffffff;
+      --bg-muted: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-glass-strong: rgba(255, 255, 255, 0.88);
+      --text-primary: #0a0f1a;
+      --text-secondary: #475569;
+      --text-tertiary: #94a3b8;
+      --border-glass: rgba(0, 0, 0, 0.08);
+      --border-card: rgba(0, 0, 0, 0.08);
+      --border-card-hover: rgba(0, 123, 255, 0.2);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 24px 48px rgba(0, 0, 0, 0.12);
+      --color-brand-rgb: 0, 123, 255;
+
+      /* OKR tokens — light */
+      --okr-bg: #f4f7fb;
+      --okr-card-bg: #ffffff;
+      --okr-title: #0f2d5c;
+      --okr-subtitle: #64748b;
+      --okr-border: #e2e8f0;
+      --okr-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      --okr-tab-inactive: #64748b;
+      --okr-tab-active: #2563eb;
+      --okr-guide-btn-bg: #ffffff;
+      --okr-empty-border: #cbd5e1;
+      --okr-gauge-track: #e2e8f0;
+      --okr-warning-bg: #fef3c7;
+      --okr-warning-text: #92400e;
+      --okr-select-bg: #ffffff;
+      --okr-link: #2563eb;
+      --okr-pill-green-bg: #dcfce7;
+      --okr-pill-green-text: #15803d;
+      --okr-pill-blue-bg: #dbeafe;
+      --okr-pill-blue-text: #1d4ed8;
+      --okr-profile-gradient: radial-gradient(circle at 0% 0%, rgba(37, 99, 235, 0.12) 0%, transparent 55%);
+    }
+
+    [data-theme="dark"] {
+      --bg-app: #030712;
+      --bg-muted: #0a0f1a;
+      --bg-card: #0a0f1a;
+      --bg-glass-strong: rgba(10, 15, 26, 0.82);
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-tertiary: #64748b;
+      --border-glass: rgba(255, 255, 255, 0.06);
+      --border-card: rgba(255, 255, 255, 0.06);
+      --border-card-hover: rgba(56, 189, 248, 0.3);
+      color-scheme: dark;
+
+      --okr-bg: #030712;
+      --okr-card-bg: #0a0f1a;
+      --okr-title: #f1f5f9;
+      --okr-subtitle: #94a3b8;
+      --okr-border: rgba(255, 255, 255, 0.06);
+      --okr-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      --okr-tab-inactive: #94a3b8;
+      --okr-tab-active: #38bdf8;
+      --okr-guide-btn-bg: rgba(255, 255, 255, 0.05);
+      --okr-empty-border: rgba(255, 255, 255, 0.12);
+      --okr-gauge-track: #1e293b;
+      --okr-warning-bg: rgba(245, 158, 11, 0.15);
+      --okr-warning-text: #fbbf24;
+      --okr-select-bg: #0f172a;
+      --okr-link: #38bdf8;
+      --okr-pill-green-bg: rgba(16, 185, 129, 0.15);
+      --okr-pill-green-text: #34d399;
+      --okr-pill-blue-bg: rgba(56, 189, 248, 0.15);
+      --okr-pill-blue-text: #38bdf8;
+      --okr-profile-gradient: radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.18) 0%, transparent 55%);
+    }
+
+    [data-theme="light"] .header {
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    }
+    [data-theme="light"] .nav-link { color: #475569; }
+    [data-theme="light"] .nav-link:hover,
+    [data-theme="light"] .nav-link.is-active { color: var(--brand-blue); background: rgba(0, 123, 255, 0.05); }
+    [data-theme="light"] .profile-chip--header { background: #f1f5f9; border-color: #e2e8f0; }
+    [data-theme="light"] .profile-chip__name { color: #0f172a; }
+    [data-theme="light"] .icon-btn--theme { color: #475569; }
+    [data-theme="dark"] .header { background: rgba(3, 7, 18, 0.85); border-bottom-color: rgba(255, 255, 255, 0.05); }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--text-primary);
+      background-color: var(--bg-app);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .dashboard-body-scroll {
+      min-height: 100vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    /* ─── HEADER ─── */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 72px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+    }
+    [data-theme="dark"] .header {
+      background: rgba(3, 7, 18, 0.6);
+      border-bottom-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .navbar {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo__img { height: 26px; }
+    [data-theme="light"] .nav-logo__img {
+      filter: brightness(0) saturate(100%);
+    }
+    [data-theme="dark"] .nav-logo__img {
+      filter: none;
+    }
+    .nav-list { display: flex; list-style: none; gap: 4px; padding: 0; margin: 0; }
+    .nav-item { position: relative; list-style: none; }
+
+    .nav-link {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .nav-link__icon { font-size: 13px; opacity: 0.9; }
+    .nav-link:hover, .nav-link.is-active {
+      color: var(--brand-blue);
+      background: rgba(var(--color-brand-rgb), 0.08);
+    }
+
+    .nav-chevron { font-size: 10px; opacity: 0.9; transition: transform 0.3s; }
+    .nav-item:hover .nav-chevron { transform: rotate(180deg); }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      padding: 8px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      z-index: 100;
+      list-style: none;
+      margin: 0;
+    }
+
+    .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown li { list-style: none; margin-bottom: 2px; }
+    .dropdown li:last-child { margin-bottom: 0; }
+
+    .dropdown button,
+    .dropdown a {
+      width: 100%;
+      text-align: left;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.2s;
+      white-space: nowrap;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .dropdown button:hover,
+    .dropdown a:hover,
+    .dropdown a.is-active {
+      background: rgba(var(--color-brand-rgb), 0.08);
+      color: var(--brand-blue);
+    }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+    .nav-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border-glass);
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0;
+    }
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    .nav-toggle.is-active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-toggle.is-active span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .icon-btn--theme {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s;
+    }
+    .icon-btn--theme:hover { background: rgba(var(--color-brand-rgb), 0.08); color: var(--brand-blue); }
+    [data-theme="dark"] .icon-theme--sun { display: none; }
+    [data-theme="light"] .icon-theme--moon { display: none; }
+
+    .profile-chip--header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 12px 4px 4px;
+      border-radius: 30px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border-glass);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .profile-chip--header:hover { border-color: var(--brand-blue); background: var(--bg-card); }
+    .profile-chip__avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; }
+    .profile-chip__name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+
+    .module-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .page-section {
+      padding: 88px 0 48px;
+    }
+
+    /* ─── HOME PAGE CARDS ─── */
+    .glass-card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 30px;
+      border: 1px solid var(--border-glass);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .glass-card--flush {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    [data-theme="dark"] .glass-card,
+    [data-theme="dark"] .kpi-card {
+      background: #0a0f1a;
+      border-color: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid var(--border-glass);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      min-height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card--metric::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--card-accent, var(--brand-blue));
+    }
+
+    .kpi-card--blue { --card-accent: #007bff; --card-accent-rgb: 0, 123, 255; }
+    .kpi-card--green { --card-accent: #10b981; --card-accent-rgb: 16, 185, 129; }
+    .kpi-card--purple { --card-accent: #8b5cf6; --card-accent-rgb: 139, 92, 246; }
+    .kpi-card--teal { --card-accent: #0d9488; --card-accent-rgb: 13, 148, 136; }
+    .kpi-card--navy { --card-accent: #1e3a8a; --card-accent-rgb: 30, 58, 138; }
+    .kpi-card--sky { --card-accent: #0ea5e9; --card-accent-rgb: 14, 165, 233; }
+
+    .kpi-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--card-accent, var(--brand-blue));
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 0 20px rgba(var(--card-accent-rgb, 0, 123, 255), 0.2);
+    }
+
+    .kpi-card__title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .kpi-card__value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .kpi-card__trend {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .kpi-card__footer {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--card-accent, var(--brand-blue));
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      padding-top: 16px;
+      text-decoration: none;
+    }
+
+    .kpi-card__footer i { font-size: 14px; }
+
+    /* ─── OKR PAGE ─── */
+    .okr-header-band {
+      width: 100%;
+      margin-bottom: 28px;
+    }
+
+    .okr-header-band__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .okr-header-band__title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--okr-title);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .okr-guide-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--okr-border);
+      background: var(--okr-guide-btn-bg);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.2s;
+      flex-shrink: 0;
+    }
+    .okr-guide-btn:hover { border-color: var(--okr-tab-active); color: var(--okr-tab-active); }
+
+    .okr-primary-tabs {
+      display: flex;
+      gap: 28px;
+      border-bottom: 1px solid var(--okr-border);
+      margin-bottom: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    .okr-primary-tab {
+      padding: 12px 2px 13px;
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--okr-tab-inactive);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .okr-primary-tab.is-active {
+      color: var(--okr-title);
+      font-weight: 700;
+    }
+    .okr-primary-tab.is-active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      background: var(--okr-tab-active);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .okr-subnav {
+      display: flex;
+      gap: 28px;
+      padding: 12px 0 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: transparent;
+    }
+    .okr-subnav::-webkit-scrollbar { display: none; }
+
+    .okr-subnav__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--okr-tab-inactive);
+      text-decoration: none;
+      white-space: nowrap;
+      padding-bottom: 6px;
+      border-bottom: 2px solid transparent;
+      transition: 0.2s;
+    }
+    .okr-subnav__link i { font-size: 14px; opacity: 0.85; }
+    .okr-subnav__link.is-active {
+      color: var(--okr-tab-active);
+      border-bottom-color: var(--okr-tab-active);
+    }
+    .okr-subnav__link:hover { color: var(--okr-tab-active); }
+
+    .okr-page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .okr-page-header__title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--okr-title);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .okr-page-header__subtitle {
+      font-size: 13px;
+      color: var(--okr-subtitle);
+      margin-top: 4px;
+    }
+
+    .okr-page-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .okr-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid var(--okr-border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+    }
+    .okr-btn:hover { border-color: var(--okr-tab-active); color: var(--okr-tab-active); }
+
+    .okr-btn--primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+      padding: 10px 22px;
+    }
+    .okr-btn--primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+      color: #fff;
+    }
+
+    .okr-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.25);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .okr-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .okr-middle-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .okr-profile-card {
+      position: relative;
+      background: var(--okr-profile-gradient), var(--bg-card);
+    }
+
+    .okr-profile-card__header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 30px 20px;
+      border-bottom: 1px solid var(--border-glass);
+    }
+
+    .okr-profile-card__avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--bg-card);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .okr-profile-card__name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--okr-title);
+    }
+
+    .okr-profile-card__role {
+      font-size: 13px;
+      color: var(--okr-subtitle);
+      margin-top: 2px;
+    }
+
+    .okr-profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 32px;
+      padding: 24px 30px 30px;
+    }
+
+    .okr-field__label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .okr-field__value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .okr-field__value--link {
+      color: var(--okr-link);
+      text-decoration: none;
+    }
+    .okr-field__value--link:hover { text-decoration: underline; }
+
+    .okr-manager {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .okr-manager__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .okr-manager__name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .okr-manager__role {
+      font-size: 11px;
+      color: var(--okr-subtitle);
+    }
+
+    .okr-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .okr-pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .okr-pill--green {
+      background: var(--okr-pill-green-bg);
+      color: var(--okr-pill-green-text);
+    }
+    .okr-pill--blue {
+      background: var(--okr-pill-blue-bg);
+      color: var(--okr-pill-blue-text);
+    }
+
+    .okr-performance-card.glass-card {
+      padding: 24px 30px 30px;
+    }
+
+    .okr-performance-card__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 0 8px;
+    }
+
+    .okr-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--okr-title);
+    }
+    .okr-section-title i { color: var(--okr-tab-active); font-size: 16px; }
+
+    .okr-section-subtitle {
+      font-size: 12px;
+      color: var(--okr-subtitle);
+      margin-top: 2px;
+    }
+
+    .okr-select {
+      padding: 6px 28px 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--okr-border);
+      background: var(--okr-select-bg);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+    }
+
+    .okr-gauge-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 0 0;
+    }
+
+    .okr-gauge {
+      width: 100%;
+      max-width: 280px;
+      height: 150px;
+    }
+
+    .okr-gauge__track {
+      fill: none;
+      stroke: var(--okr-gauge-track);
+      stroke-width: 18;
+      stroke-linecap: round;
+    }
+
+    .okr-gauge__progress {
+      fill: none;
+      stroke: #2563eb;
+      stroke-width: 18;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.8s ease;
+    }
+
+    [data-theme="dark"] .okr-gauge__progress {
+      stroke: #38bdf8;
+    }
+
+    .okr-gauge__score {
+      text-align: center;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--okr-title);
+      margin-top: -8px;
+    }
+    .okr-gauge__score span {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--okr-subtitle);
+    }
+
+    .okr-warning {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 12px auto 0;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--okr-warning-bg);
+      color: var(--okr-warning-text);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .okr-status--good {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+    }
+
+    [data-theme="dark"] .okr-status--good {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+
+    .okr-performance-card__footer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 16px 0 0;
+      font-size: 11px;
+      color: var(--okr-subtitle);
+    }
+
+    .okr-panel {
+      margin-bottom: 24px;
+    }
+
+    .okr-panel.glass-card {
+      margin-bottom: 24px;
+    }
+
+    .okr-panel__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .okr-panel__header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .okr-link-muted {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--okr-tab-active);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .okr-link-muted:hover { text-decoration: underline; }
+
+    .okr-past-grid {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 16px;
+    }
+
+    .okr-empty {
+      border: 2px dashed var(--okr-empty-border);
+      border-radius: 16px;
+      background: var(--bg-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+      color: var(--okr-subtitle);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .okr-empty--side {
+      flex-direction: column;
+      gap: 8px;
+      min-height: 180px;
+      font-size: 13px;
+    }
+    .okr-empty--side i {
+      font-size: 28px;
+      opacity: 0.4;
+    }
+
+    .okr-feedback-empty {
+      min-height: 120px;
+    }
+
+    @media (max-width: 1200px) {
+      .okr-stat-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 1024px) {
+      .navbar { padding: 0 16px; }
+      .nav-toggle { display: flex; order: 2; }
+      .nav-menu {
+        position: fixed;
+        top: 72px;
+        left: -100%;
+        width: 280px;
+        height: calc(100vh - 72px);
+        background: var(--bg-card);
+        border-right: 1px solid var(--border-glass);
+        padding: 24px;
+        transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 999;
+        overflow-y: auto;
+      }
+      .nav-menu.is-active { left: 0; box-shadow: 20px 0 40px rgba(0, 0, 0, 0.1); }
+      .nav-list { flex-direction: column; gap: 8px; }
+      .nav-link { padding: 12px 16px; width: 100%; font-size: 15px; }
+      .dropdown {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        padding-left: 32px;
+        display: none;
+      }
+      .nav-item.is-active .dropdown { display: block; }
+      .nav-actions { order: 3; gap: 8px; }
+      .profile-chip__name { display: none; }
+      .profile-chip--header { padding: 4px; }
+
+      .okr-middle-grid { grid-template-columns: 1fr; }
+      .okr-past-grid { grid-template-columns: 1fr; }
+      .module-container { padding: 0 20px; }
+    }
+
+    @media (max-width: 768px) {
+      .okr-stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .okr-profile-grid { grid-template-columns: 1fr; }
+      .okr-page-header { flex-direction: column; }
+      .okr-header-band__top { flex-direction: column; align-items: flex-start; }
+      .okr-header-band__title { font-size: 1.6rem; }
+      .okr-primary-tabs { gap: 20px; }
+      .okr-subnav { padding-top: 12px; }
+    }
+
+    @media (max-width: 480px) {
+      .okr-stat-grid { grid-template-columns: 1fr; }
+      .okr-primary-tabs { gap: 16px; }
+      .okr-header-band__title { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body class="dashboard-body-scroll">
+
+  <header class="header">
+    <nav class="navbar" id="main-navbar">
+      <div class="nav-brand">
+        <a href="portal_home_page.html" class="nav-logo">
+          <img src="beinex-ai-logo-dark.svg" alt="Beinex AI" class="nav-logo__img" id="nav-logo-img">
+        </a>
+      </div>
+
+      <button class="nav-toggle" id="mobile-nav-toggle" aria-label="Toggle Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-menu" id="nav-menu-drawer">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="portal_home_page.html" class="nav-link"><i class="fa-solid fa-house nav-link__icon"></i> Home</a></li>
+          <li class="nav-item"><a href="my_space.html" class="nav-link"><i class="fa-solid fa-user nav-link__icon"></i> My Space</a></li>
+          <li class="nav-item has-dropdown">
+            <button class="nav-link"><i class="fa-solid fa-users nav-link__icon"></i> People <i class="fa-solid fa-chevron-down nav-chevron"></i></button>
+            <ul class="dropdown">
+              <li><button onclick="triggerMockAction('Team')"><i class="fa-solid fa-users-viewfinder dropdown__icon"></i> Team</button></li>
+              <li><button onclick="triggerMockAction('Organization')"><i class="fa-solid fa-sitemap dropdown__icon"></i> Organization</button></li>
+            </ul>
+          </li>
+          <li class="nav-item has-dropdown">
+            <button class="nav-link is-active"><i class="fa-solid fa-chart-line nav-link__icon"></i> Performance <i class="fa-solid fa-chevron-down nav-chevron"></i></button>
+            <ul class="dropdown">
+              <li><a href="okr.html" class="is-active"><i class="fa-solid fa-bullseye dropdown__icon"></i> OKRs</a></li>
+            </ul>
+          </li>
+          <li class="nav-item has-dropdown">
+            <button class="nav-link"><i class="fa-solid fa-briefcase nav-link__icon"></i> Services <i class="fa-solid fa-chevron-down nav-chevron"></i></button>
+            <ul class="dropdown">
+              <li><button onclick="triggerMockAction('Work expense')"><i class="fa-solid fa-receipt dropdown__icon"></i> Work expense</button></li>
+              <li><button onclick="triggerMockAction('Seat booking')"><i class="fa-solid fa-chair dropdown__icon"></i> Seat booking</button></li>
+              <li><button onclick="triggerMockAction('Ticketing')"><i class="fa-solid fa-ticket dropdown__icon"></i> Ticketing</button></li>
+              <li><button onclick="triggerMockAction('Timesheet')"><i class="fa-solid fa-clock dropdown__icon"></i> Timesheet</button></li>
+              <li><button onclick="triggerMockAction('Leave')"><i class="fa-solid fa-calendar-minus dropdown__icon"></i> Leave</button></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="community.html" class="nav-link"><i class="fa-solid fa-people-group nav-link__icon"></i> Community</a>
+          </li>
+          <li class="nav-item has-dropdown">
+            <button class="nav-link"><i class="fa-solid fa-grid-2 nav-link__icon"></i> Other <i class="fa-solid fa-chevron-down nav-chevron"></i></button>
+            <ul class="dropdown">
+              <li><button onclick="triggerMockAction('Learning')"><i class="fa-solid fa-graduation-cap dropdown__icon"></i> Learning</button></li>
+              <li><button onclick="triggerMockAction('Policies')"><i class="fa-solid fa-shield-halved dropdown__icon"></i> Policies</button></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="nav-actions">
+        <button class="icon-btn--theme" onclick="toggleColorTheme()" title="Toggle Theme">
+          <i class="fa-solid fa-sun icon-theme--sun"></i>
+          <i class="fa-solid fa-moon icon-theme--moon"></i>
+        </button>
+        <div class="profile-chip--header" onclick="location.href='my_space.html'">
+          <img src="profile.jpeg" alt="Christo Siby" class="profile-chip__avatar">
+          <span class="profile-chip__name">Christo Siby.</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-section">
+      <div class="okr-header-band">
+        <div class="module-container">
+          <div class="okr-header-band__top">
+            <h1 class="okr-header-band__title">OKR Intelligence Hub</h1>
+            <button class="okr-guide-btn" type="button">
+              <i class="fa-regular fa-star"></i> Guide Me
+            </button>
+          </div>
+
+          <div class="okr-primary-tabs" role="tablist">
+            <button class="okr-primary-tab is-active" type="button">My Performance</button>
+            <button class="okr-primary-tab" type="button">Team Performance</button>
+          </div>
+
+          <nav class="okr-subnav" aria-label="OKR sections">
+            <a href="#" class="okr-subnav__link is-active"><i class="fa-solid fa-globe"></i> My Performance Profile</a>
+            <a href="#" class="okr-subnav__link"><i class="fa-solid fa-list-check"></i> Assigned Objectives</a>
+            <a href="#" class="okr-subnav__link"><i class="fa-solid fa-square-check"></i> Action Center</a>
+            <a href="#" class="okr-subnav__link"><i class="fa-solid fa-paper-plane"></i> All Objectives History</a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="module-container">
+
+        <div class="okr-page-header">
+          <div>
+            <h2 class="okr-page-header__title">My Performance Profile</h2>
+            <p class="okr-page-header__subtitle">Latest Monthly OKR Performance Status &amp; Insights</p>
+          </div>
+          <div class="okr-page-actions">
+            <button class="okr-btn" type="button"><i class="fa-solid fa-download"></i> Export</button>
+            <button class="okr-btn okr-btn--primary" type="button">
+              <i class="fa-solid fa-circle-check"></i> Pending Check-Ins
+              <span class="okr-badge">0</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="okr-stat-grid">
+          <article class="kpi-card kpi-card--teal kpi-card--metric">
+            <h4 class="kpi-card__title">Total OKRs</h4>
+            <span class="kpi-card__value">0</span>
+            <span class="kpi-card__trend">All assigned OKRs</span>
+            <a href="#" class="kpi-card__footer">View Details <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+          <article class="kpi-card kpi-card--green kpi-card--metric">
+            <h4 class="kpi-card__title">Completed</h4>
+            <span class="kpi-card__value">0</span>
+            <span class="kpi-card__trend">Manager review completed</span>
+            <a href="#" class="kpi-card__footer">View Details <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+          <article class="kpi-card kpi-card--navy kpi-card--metric">
+            <h4 class="kpi-card__title">In Review</h4>
+            <span class="kpi-card__value">0</span>
+            <span class="kpi-card__trend">Awaiting manager review</span>
+            <a href="#" class="kpi-card__footer">View Details <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+          <article class="kpi-card kpi-card--purple kpi-card--metric">
+            <h4 class="kpi-card__title">Returned</h4>
+            <span class="kpi-card__value">0</span>
+            <span class="kpi-card__trend">Returned by manager</span>
+            <a href="#" class="kpi-card__footer">View Details <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+          <article class="kpi-card kpi-card--sky kpi-card--metric">
+            <h4 class="kpi-card__title">Active</h4>
+            <span class="kpi-card__value">0</span>
+            <span class="kpi-card__trend">No check-in created yet</span>
+            <a href="#" class="kpi-card__footer">View Details <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+          <article class="kpi-card kpi-card--blue kpi-card--metric">
+            <h4 class="kpi-card__title">Open</h4>
+            <span class="kpi-card__value">0</span>
+            <span class="kpi-card__trend">Pending check-in submit</span>
+            <a href="#" class="kpi-card__footer">View Details <i class="fa-solid fa-arrow-right"></i></a>
+          </article>
+        </div>
+
+        <div class="okr-middle-grid">
+          <article class="glass-card glass-card--flush okr-profile-card">
+            <div class="okr-profile-card__header">
+              <img src="https://ui-avatars.com/api/?name=Linto+Sebastian&background=2563eb&color=fff&size=128" alt="Linto Sebastian" class="okr-profile-card__avatar">
+              <div>
+                <div class="okr-profile-card__name">Linto Sebastian</div>
+                <div class="okr-profile-card__role">Lead Consultant - Data Science &amp; AI</div>
+              </div>
+            </div>
+            <div class="okr-profile-grid">
+              <div class="okr-field">
+                <div class="okr-field__label">Employee ID</div>
+                <div class="okr-field__value">10108</div>
+              </div>
+              <div class="okr-field">
+                <div class="okr-field__label">Date of Joining</div>
+                <div class="okr-field__value">01/11/2022</div>
+              </div>
+              <div class="okr-field">
+                <div class="okr-field__label">Email</div>
+                <a href="mailto:linto.sebastian@beinex.ai" class="okr-field__value okr-field__value--link">linto.sebastian@beinex.ai</a>
+              </div>
+              <div class="okr-field">
+                <div class="okr-field__label">Designation</div>
+                <div class="okr-field__value">Lead Consultant - Data Science &amp; AI</div>
+              </div>
+              <div class="okr-field">
+                <div class="okr-field__label">Department</div>
+                <div class="okr-field__value">Data &amp; Analytics</div>
+              </div>
+              <div class="okr-field">
+                <div class="okr-field__label">Vertical</div>
+                <div class="okr-field__value">Data &amp; Insights</div>
+              </div>
+              <div class="okr-field">
+                <div class="okr-field__label">Reporting Manager</div>
+                <div class="okr-manager">
+                  <img src="https://ui-avatars.com/api/?name=Sharun+K+Kurian&background=0d9488&color=fff&size=72" alt="Sharun K Kurian" class="okr-manager__avatar">
+                  <div>
+                    <div class="okr-manager__name">Sharun K Kurian</div>
+                    <div class="okr-manager__role">Senior Manager - Analytics</div>
+                  </div>
+                </div>
+              </div>
+              <div class="okr-field">
+                <div class="okr-field__label">Grade</div>
+                <div class="okr-pills">
+                  <span class="okr-pill okr-pill--green">Grade 6</span>
+                  <span class="okr-pill okr-pill--blue">Senior Professional</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="glass-card okr-performance-card">
+            <div class="okr-performance-card__header">
+              <div>
+                <div class="okr-section-title"><i class="fa-solid fa-gauge-high"></i> Performance</div>
+                <div class="okr-section-subtitle">Manager - Approved OKR Performance Score</div>
+              </div>
+              <select class="okr-select" aria-label="Performance period">
+                <option>Year to Date</option>
+              </select>
+            </div>
+            <div class="okr-gauge-wrap">
+              <svg class="okr-gauge" viewBox="0 0 280 150" aria-hidden="true">
+                <path class="okr-gauge__track" d="M 30 130 A 110 110 0 0 1 250 130"/>
+                <path class="okr-gauge__progress" id="okr-gauge-progress" d="M 30 130 A 110 110 0 0 1 250 130" stroke-dasharray="345.575" stroke-dashoffset="94.783"/>
+              </svg>
+              <div class="okr-gauge__score" id="okr-gauge-score">7.25 <span>/ 10</span></div>
+            </div>
+            <div class="okr-warning okr-status--good" id="okr-gauge-status">Based on 4 completed check-ins</div>
+            <div class="okr-performance-card__footer">
+              <i class="fa-regular fa-clock"></i> Updated Jul 18, 2026
+            </div>
+          </article>
+        </div>
+
+        <section class="okr-panel glass-card">
+          <div class="okr-panel__header">
+            <div>
+              <div class="okr-section-title"><i class="fa-solid fa-chart-column"></i> Past Performance Data</div>
+              <div class="okr-section-subtitle">Tap any month to drill into objective-wise breakdown</div>
+            </div>
+            <select class="okr-select" aria-label="Performance view">
+              <option>Monthly</option>
+            </select>
+          </div>
+          <div class="okr-past-grid">
+            <div class="okr-empty">No past performance data available.</div>
+            <div class="okr-empty okr-empty--side">
+              <i class="fa-regular fa-calendar"></i>
+              No data yet
+            </div>
+          </div>
+        </section>
+
+        <section class="okr-panel glass-card">
+          <div class="okr-panel__header">
+            <div class="okr-section-title"><i class="fa-regular fa-comment-dots"></i> Recent Manager Feedback</div>
+            <a href="#" class="okr-link-muted">View all <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+          <div class="okr-empty okr-feedback-empty">No manager feedback available</div>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const THEME_STORAGE_KEY = 'pp-theme';
+    let currentTheme = 'dark';
+
+    function initTheme() {
+      const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      currentTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', currentTheme);
+    }
+
+    function toggleColorTheme() {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      localStorage.setItem(THEME_STORAGE_KEY, currentTheme);
+      updateLogo();
+    }
+
+    function updateLogo() {
+      const logoImg = document.getElementById('nav-logo-img');
+      if (logoImg) logoImg.src = 'beinex-ai-logo-dark.svg';
+    }
+
+    function initMobileNav() {
+      const toggle = document.getElementById('mobile-nav-toggle');
+      const drawer = document.getElementById('nav-menu-drawer');
+
+      if (toggle && drawer) {
+        toggle.addEventListener('click', () => {
+          toggle.classList.toggle('is-active');
+          drawer.classList.toggle('is-active');
+        });
+      }
+
+      document.querySelectorAll('.has-dropdown > .nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024) {
+            e.preventDefault();
+            link.parentElement.classList.toggle('is-active');
+          }
+        });
+      });
+    }
+
+    function triggerMockAction(name) {
+      alert('Action: ' + name);
+    }
+
+    function initOkrGauge() {
+      const gaugeData = {
+        score: 7.25,
+        maxScore: 10,
+        completedCheckIns: 4,
+        updatedLabel: 'Updated Jul 18, 2026'
+      };
+
+      const arcLength = Math.PI * 110;
+      const progress = Math.min(Math.max(gaugeData.score / gaugeData.maxScore, 0), 1);
+      const progressPath = document.getElementById('okr-gauge-progress');
+      const scoreEl = document.getElementById('okr-gauge-score');
+      const statusEl = document.getElementById('okr-gauge-status');
+
+      if (progressPath) {
+        progressPath.setAttribute('stroke-dasharray', String(arcLength));
+        progressPath.setAttribute('stroke-dashoffset', String(arcLength * (1 - progress)));
+      }
+
+      if (scoreEl) {
+        scoreEl.innerHTML = gaugeData.score.toFixed(2) + ' <span>/ ' + gaugeData.maxScore + '</span>';
+      }
+
+      if (statusEl) {
+        statusEl.textContent = 'Based on ' + gaugeData.completedCheckIns + ' completed check-ins';
+      }
+    }
+
+    window.onload = () => {
+      initTheme();
+      updateLogo();
+      initMobileNav();
+      initOkrGauge();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
